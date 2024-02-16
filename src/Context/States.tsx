@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { produce } from "immer";
-import * as React from "react";
 import { AlertColor } from "@mui/material";
 import { ClerkResponseObject, ClerkUser } from "../Pages/Home/Home";
 type userStoreType = {

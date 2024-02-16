@@ -1,6 +1,6 @@
 import { SignOutButton, useUser } from "@clerk/clerk-react";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastStore, userStore } from "../../Context/States";
 import { ToastContainer, toast } from "react-toastify";
 import { AlertColor } from "@mui/material";

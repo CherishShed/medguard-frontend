@@ -1,9 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../Login/auth.css";
-import { Button, TextField } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { SignUp } from "@clerk/clerk-react";
 
@@ -14,21 +12,21 @@ export type formDataType = {
   password: string;
 };
 function Signup() {
-  const [formData, setFormData] = useState<formDataType>({
-    userName: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-  });
-  const [labels, setLabels] = useState({
-    emailLabel: "Email",
-    passwordLabel: "",
-    passwordPlaceholder: "Password",
-    passwordHelperText: "",
-    emailHelperText: "",
-    firstNameHelperText: "",
-    lastNameHelperText: "",
-  });
+  // const [formData, setFormData] = useState<formDataType>({
+  //   userName: "",
+  //   firstName: "",
+  //   lastName: "",
+  //   password: "",
+  // });
+  // const [labels, setLabels] = useState({
+  //   emailLabel: "Email",
+  //   passwordLabel: "",
+  //   passwordPlaceholder: "Password",
+  //   passwordHelperText: "",
+  //   emailHelperText: "",
+  //   firstNameHelperText: "",
+  //   lastNameHelperText: "",
+  // });
   const [toastText, settoastText] = useState("");
 
   useEffect(() => {
@@ -56,20 +54,20 @@ function Signup() {
   }, [toastText]);
   useEffect(() => {});
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    console.log("here");
-    event.preventDefault();
-    axios.post("http://localhost:8081/login", formData).then((result) => {
-      console.log(result);
-      settoastText(result.data.message);
-      setTimeout(() => {
-        if (result.data.success) {
-          localStorage.setItem("token", result.data.token);
-          window.location.pathname = "/";
-        }
-      }, 500);
-    });
-  }
+  // function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  //   console.log("here");
+  //   event.preventDefault();
+  //   axios.post("http://localhost:8081/login", formData).then((result) => {
+  //     console.log(result);
+  //     settoastText(result.data.message);
+  //     setTimeout(() => {
+  //       if (result.data.success) {
+  //         localStorage.setItem("token", result.data.token);
+  //         window.location.pathname = "/";
+  //       }
+  //     }, 500);
+  //   });
+  // }
   window.addEventListener("load", () => {
     document.getElementById("usernameInput")?.focus();
   });
