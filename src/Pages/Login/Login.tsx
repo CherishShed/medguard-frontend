@@ -1,10 +1,5 @@
 import { useEffect } from "react";
 import "./auth.css";
-// import { Button, InputAdornment, TextField } from "@mui/material";
-// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-// import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
-// import { IconButton } from "@mui/material";
-// import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 // import axios from "axios";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
