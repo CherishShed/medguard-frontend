@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./auth.css";
 // import { Button, InputAdornment, TextField } from "@mui/material";
 // import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -6,7 +6,7 @@ import "./auth.css";
 // import { IconButton } from "@mui/material";
 // import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 // import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { SignIn } from "@clerk/clerk-react";
