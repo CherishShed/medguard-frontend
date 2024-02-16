@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { SignUp } from "@clerk/clerk-react";
 
 export type formDataType = {
   userName: string;
@@ -77,15 +78,18 @@ function Signup() {
       <ToastContainer />
       <div className="w-full h-screen">
         <div
-          className="mx-auto bg-white w-[80%] max-w-[800px] mt-[5%] flex gap-7 items-center min-h-fit h-[80%] rounded-tl-3xl"
+          className="mx-auto overflow-hidden bg-white w-fit md:w-[80%] max-w-[800px] mt-[5%] md:flex items-center min-h-fit h-[80%] rounded-tl-3xl"
           id="loginPage"
         >
           <img
             src="https://images.pexels.com/photos/4386464/pexels-photo-4386464.jpeg?auto=compress&cs=tinysrgb&w=600"
             alt="welcome"
-            className="w-[50%] h-full rounded-tl-3xl"
+            className="hidden w-[50%] h-full  rounded-tl-3xl md:flex"
           />
-          <form
+          <div>
+            <SignUp signInUrl="/signin" />
+          </div>
+          {/* <form
             className="flex flex-col gap-5 bg-white items-center p-2"
             onSubmit={handleSubmit}
           >
@@ -95,6 +99,7 @@ function Signup() {
                 Welcome To Your Note Assistant
               </p>
             </div>
+
             <div className="flex gap-1">
               <TextField
                 name="firstName"
@@ -226,9 +231,9 @@ function Signup() {
               variant="contained"
               size="large"
             >
-              Login
+              Signup
             </Button>
-          </form>
+          </form> */}
         </div>
       </div>
     </div>

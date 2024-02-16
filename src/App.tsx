@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login/Login";
-import { Home } from "@mui/icons-material";
 import Signup from "./Pages/Signup/Signup";
+import Home from "./Pages/Home/Home";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="login" element={<Login />} />
+      <Route path="signin" element={<Login />} />
       <Route path="signup" element={<Signup />} />
       {/* <Route path="*" element={<Error />} /> */}
     </Routes>

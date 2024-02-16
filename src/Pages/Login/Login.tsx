@@ -1,34 +1,45 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./auth.css";
-import { Button, InputAdornment, TextField } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
-import { IconButton } from "@mui/material";
-import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
-import axios from "axios";
+// import { Button, InputAdornment, TextField } from "@mui/material";
+// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
+// import { IconButton } from "@mui/material";
+// import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
+// import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { SignIn } from "@clerk/clerk-react";
+import { ToastStore, userStore } from "../../Context/States";
 
 function Login() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ username: "", password: "" });
-  const [helpText, setHelpText] = useState("");
-  const [toastText, settoastText] = useState("");
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [formData, setFormData] = useState({ username: "", password: "" });
+  // const [helpText, setHelpText] = useState("");
+  const toastText = ToastStore((store) => store.message);
+  // const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const isAuthenticated = userStore((store) => store.isAuthenticated);
+  const user = userStore((store) => store.user);
 
+  const toastSeverity = ToastStore((store) => store.severity);
+  const openToast = ToastStore((store) => store.openToast);
+  const closeToast = ToastStore((store) => store.closeToast);
   useEffect(() => {
-    if (toastText === "User not found" || toastText === "Incorrect Password") {
+    console.log(toastText);
+    console.log(toastSeverity);
+    if (toastSeverity === "error") {
       toast.error(toastText, {
         position: "top-right",
         className: "foo-bar",
         pauseOnHover: false,
+        onClose: closeToast,
         autoClose: 1000,
         theme: "light",
       });
-    } else if (toastText === "Login Success") {
+    } else if (toastSeverity === "success") {
       toast.success(toastText, {
         position: "top-right",
+        onClose: closeToast,
         className: "foo-bar",
         pauseOnHover: false,
         autoClose: 1000,
@@ -37,42 +48,46 @@ function Login() {
     } else {
       return;
     }
-
-    settoastText("");
   }, [toastText]);
-  useEffect(() => {});
+  useEffect(() => {
+    if (isAuthenticated) {
+      openToast("Log in successful", "success");
+    }
+  }, [user]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    console.log("here");
-    event.preventDefault();
-    axios.post("http://localhost:8081/login", formData).then((result) => {
-      console.log(result);
-      settoastText(result.data.message);
-      setTimeout(() => {
-        if (result.data.success) {
-          localStorage.setItem("token", result.data.token);
-          window.location.pathname = "/";
-        }
-      }, 500);
-    });
-  }
+  // function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  //   console.log("here");
+  //   event.preventDefault();
+  //   axios.post("http://localhost:8081/login", formData).then((result) => {
+  //     console.log(result);
+  //     settoastText(result.data.message);
+  //     setTimeout(() => {
+  //       if (result.data.success) {
+  //         localStorage.setItem("token", result.data.token);
+  //         window.location.pathname = "/";
+  //       }
+  //     }, 500);
+  //   });
+  // }
   window.addEventListener("load", () => {
     document.getElementById("usernameInput")?.focus();
   });
   return (
     <div>
-      <ToastContainer />
       <div className="w-full h-screen">
         <div
-          className="mx-auto bg-white w-[80%] max-w-[800px] mt-[5%] flex gap-7 items-center min-h-fit h-[80%] rounded-tl-3xl"
+          className="mx-auto bg-white w-fit md:w-[80%] max-w-[900px] mt-[5%] md:flex items-center min-h-fit h-[80%] rounded-tl-3xl"
           id="loginPage"
         >
           <img
             src="https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=600"
             alt="welcome"
-            className="w-[50%] h-full  rounded-tl-3xl"
+            className="hidden w-[50%] h-full  rounded-tl-3xl md:flex"
           />
-          <form
+          <div className="relative">
+            <SignIn signUpUrl="/signup" />
+          </div>
+          {/* <form
             className="flex flex-col gap-5 bg-white items-center p-2 mx-auto"
             onSubmit={handleSubmit}
           >
@@ -160,7 +175,7 @@ function Login() {
             >
               Login
             </Button>
-          </form>
+          </form> */}
         </div>
       </div>
     </div>

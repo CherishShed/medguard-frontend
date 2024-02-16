@@ -11,6 +11,9 @@ body {
   --mainColor: #9babb8;
   --secondaryColor: #e9eaec;
 }
+.cl-internal-b3fm6y {
+  display: none !important;
+}
 
 .login-form {
   height: 100% !important;
