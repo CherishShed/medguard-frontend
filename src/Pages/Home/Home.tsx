@@ -1,9 +1,10 @@
-import { SignOutButton, useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { SignedIn, useUser } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
 import { ToastStore, userStore } from "../../Context/States";
-import { ToastContainer, toast } from "react-toastify";
-import { AlertColor } from "@mui/material";
+import { toast } from "react-toastify";
+import { AlertColor, CircularProgress } from "@mui/material";
+import axios from "axios";
+import { Medication, PersonAdd, ShowChart } from "@mui/icons-material";
 
 export type ClerkUser = {
   pathRoot: string;
@@ -39,7 +40,11 @@ export type ClerkResponseObject = {
   isSignedIn: boolean;
   user: ClerkUser | null;
 };
-
+type statsType = {
+  patientsNumber: number;
+  patientsOnMedication: number;
+  vitalCount: { warningCount: number; badCount: number };
+};
 function Home() {
   const toastSeverity = ToastStore((store) => store.severity);
   const openToast = ToastStore((store) => store.openToast);
@@ -47,7 +52,7 @@ function Home() {
   const toastStatus = ToastStore((store) => store.open);
   const setUser = userStore((store) => store.setUser);
   const toastText = ToastStore((store) => store.message);
-  const navigate = useNavigate();
+  const [stats, setStats] = useState<statsType | null>(null);
   const loggedInUser = useUser() as ClerkResponseObject;
   const isAuthenticated = userStore((store) => store.isAuthenticated);
 
@@ -76,6 +81,7 @@ function Home() {
       }
     }
   }
+
   useEffect(() => {
     setUser(loggedInUser);
   }, [loggedInUser]);
@@ -90,19 +96,87 @@ function Home() {
     notify(toastText, toastSeverity);
   }, [toastText]);
 
+  useEffect(() => {
+    axios
+      .get("https://medguard.vercel.app/api/healthworker/dashboardstatistics")
+      .then((statistics) => {
+        setStats(statistics.data);
+      });
+  }, []);
   return (
-    <div>
-      <ToastContainer />
-      Home
-      <button className="border rounded-md bg-red-500 text-white p-4">
-        <SignOutButton
-          signOutCallback={() => {
-            openToast("Sign Out Successful", "success");
-            navigate("/signin");
-          }}
-        />
-      </button>
-    </div>
+    <>
+      {!isAuthenticated && (
+        <CircularProgress className="!w-[200px] !h-[200px] mx-auto mt-[10%] !text-blue-500 !block" />
+      )}
+
+      <SignedIn>
+        <section className="ml-[100px] mt-[100px]">
+          <div className="flex gap-5 mx-auto justify-evenly">
+            <div className="flex flex-col justify-between rounded-xl border-2 border-lime-500 h-[170px] w-[200px] px-3 py-3 bg-lime-200">
+              <div className="flex items-center justify-evenly">
+                {stats ? (
+                  <p className="text-8xl max-w-[70%] text-black">
+                    {stats?.patientsNumber}
+                  </p>
+                ) : (
+                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+                )}
+
+                <PersonAdd color="success" className="!text-5xl" />
+              </div>
+              <p className="text-xl font-bold block text-green-700 text-center">
+                Total Patients
+              </p>
+            </div>
+            <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[170px] w-[200px] px-3 py-3 bg-sky-200">
+              <div className="flex items-center justify-evenly">
+                {stats ? (
+                  <p className="text-8xl max-w-[70%] text-black">
+                    {stats?.patientsOnMedication}
+                  </p>
+                ) : (
+                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+                )}
+                <Medication color="primary" className="!text-5xl" />
+              </div>
+              <p className="text-xl font-bold block text-sky-700 text-center">
+                Active Medications
+              </p>
+            </div>
+            <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[170px] w-[200px] px-3 py-3 bg-orange-200">
+              <div className="flex items-center justify-evenly">
+                {stats ? (
+                  <p className="text-8xl max-w-[70%] text-black">
+                    {stats?.vitalCount.warningCount}
+                  </p>
+                ) : (
+                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+                )}
+                <ShowChart color="warning" className="!text-5xl" />
+              </div>
+              <p className="text-xl font-bold block text-yellow-700 text-center">
+                Abormal Readings
+              </p>
+            </div>
+            <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[170px] w-[200px] px-3 py-3 bg-red-200">
+              <div className="flex items-center justify-evenly">
+                {stats ? (
+                  <p className="text-8xl max-w-[70%] text-black">
+                    {stats?.vitalCount.badCount}
+                  </p>
+                ) : (
+                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+                )}
+                <ShowChart color="error" className="!text-5xl" />
+              </div>
+              <p className="text-xl font-bold block text-red-700 text-center">
+                Dangerous Readings
+              </p>
+            </div>
+          </div>
+        </section>
+      </SignedIn>
+    </>
   );
 }
 
