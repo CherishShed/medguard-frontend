@@ -4,4 +4,6 @@
 
 * {
   box-sizing: border-box;
+  font-family: "Montserrat", sans-serif !important;
+  font-optical-sizing: auto;
 }

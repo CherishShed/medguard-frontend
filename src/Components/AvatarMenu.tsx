@@ -44,6 +44,9 @@ export default function AvatarMenu() {
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+        <p>
+          {loggedInUser?.firstName} {loggedInUser?.lastName}
+        </p>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}

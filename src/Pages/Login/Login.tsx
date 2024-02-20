@@ -62,13 +62,13 @@ function Login() {
           />
 
           <form
-            className="flex flex-col gap-5 bg-white items-center p-2 mx-auto"
+            className="flex flex-col gap-8 bg-white p-5 mx-auto w-full"
             onSubmit={handleSubmit}
           >
-            <div>
+            <div className="flex flex-col gap-3">
               <img alt="logo" src="fullLogo.png" className="logo" />
-              <p style={{ fontFamily: "Indie Flower", fontSize: "20px" }}>
-                Welcome To Your Note Assistant
+              <p className="text-md text-gray-400 font-medium">
+                Please enter your login details
               </p>
             </div>
             <TextField
@@ -137,7 +137,7 @@ function Login() {
             />
 
             <Button
-              className="!bg-teal-600 w-[150px] hover:!bg-blue-500"
+              className="!bg-teal-600 w-[150px] hover:!bg-blue-500 mx-auto block text-center self-center"
               type="submit"
               variant="contained"
               size="large"
