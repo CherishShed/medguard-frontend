@@ -55,6 +55,8 @@ export default function AvatarMenu() {
             aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
+            className="!bg-lime-300"
+            color="success"
           >
             <Avatar sx={{ width: 32, height: 32 }}>
               {loggedInUser?.firstName[0]}
@@ -92,6 +94,7 @@ export default function AvatarMenu() {
               transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },
+            width: 200,
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
