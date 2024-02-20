@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { AlertColor } from "@mui/material";
+import { persist } from "zustand/middleware";
+import { toast } from "react-toastify";
 type userType = {
   employeeNumber: string;
   firstName: string;
@@ -13,21 +15,26 @@ type userType = {
 type userStoreType = {
   user: userType | null;
   isAuthenticated: boolean;
-  setUser: (user: userType) => void;
+  setUser: (user: userType | null, authStatus: boolean) => void;
 };
 
-export const userStore = create<userStoreType>()((set) => ({
-  isAuthenticated: false,
-  user: null,
-  setUser: (user) => {
-    set(
-      produce((store) => {
-        store.isAuthenticated = true;
-        store.user = user;
-      })
-    );
-  },
-}));
+export const UserStore = create<userStoreType>()(
+  persist(
+    (set) => ({
+      isAuthenticated: false,
+      user: null,
+      setUser: (user, authStatus) => {
+        set(
+          produce((store) => {
+            store.isAuthenticated = authStatus;
+            store.user = user;
+          })
+        );
+      },
+    }),
+    { name: "userStore" }
+  )
+);
 
 type ToastType = {
   open: boolean;
@@ -35,6 +42,30 @@ type ToastType = {
   severity: AlertColor | null;
   openToast: (message: string, severity: string) => void;
   closeToast: () => void;
+};
+
+const notify = (toastText: string, toastSeverity: string, store: ToastType) => {
+  if (toastSeverity === "error") {
+    toast.error(toastText, {
+      position: "top-right",
+      className: "foo-bar",
+      pauseOnHover: false,
+      onClose: store.closeToast,
+      autoClose: 1000,
+      theme: "light",
+    });
+  } else if (toastSeverity === "success") {
+    toast.success(toastText, {
+      position: "top-right",
+      onClose: store.closeToast,
+      className: "foo-bar",
+      pauseOnHover: false,
+      autoClose: 1000,
+      theme: "light",
+    });
+  } else {
+    return;
+  }
 };
 
 export const ToastStore = create<ToastType>()((set) => ({
@@ -47,6 +78,7 @@ export const ToastStore = create<ToastType>()((set) => ({
         store.message = message;
         store.open = true;
         store.severity = severity;
+        notify(message, severity, store);
       })
     );
   },

@@ -1,88 +1,28 @@
 import { useEffect, useState } from "react";
-import { ToastStore, userStore } from "../../Context/States";
-import { toast } from "react-toastify";
+import { UserStore } from "../../Context/States";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { Medication, PersonAdd, ShowChart } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import SideNav from "../../Layout/SideNav";
 
-export type ClerkUser = {
-  pathRoot: string;
-  id: string;
-  externalId: string | null;
-  username: string;
-  emailAddresses: string[];
-  phoneNumbers: string[];
-  passwordEnabled: boolean;
-  firstName: string | null;
-  lastName: string | null;
-  fullName: string | null;
-  primaryEmailAddressId: string | null;
-  primaryEmailAddress: string | null;
-  primaryPhoneNumberId: string | null;
-  primaryPhoneNumber: string | null;
-  primaryWeb3WalletId: string | null;
-  primaryWeb3Wallet: string | null;
-  imageUrl: string;
-  hasImage: boolean;
-  twoFactorEnabled: boolean;
-  totpEnabled: boolean;
-  backupCodeEnabled: boolean;
-  createOrganizationEnabled: boolean;
-  deleteSelfEnabled: boolean;
-  lastSignInAt: string;
-  updatedAt: string;
-  createdAt: string;
-};
-
-export type ClerkResponseObject = {
-  isLoaded: boolean;
-  isSignedIn: boolean;
-  user: ClerkUser | null;
-};
 type statsType = {
   patientsNumber: number;
   patientsOnMedication: number;
   vitalCount: { warningCount: number; badCount: number };
 };
 function Home() {
-  const toastSeverity = ToastStore((store) => store.severity);
   // const openToast = ToastStore((store) => store.openToast);
-  const closeToast = ToastStore((store) => store.closeToast);
-  const toastText = ToastStore((store) => store.message);
   const [stats, setStats] = useState<statsType | null>(null);
-  const isAuthenticated = userStore((store) => store.isAuthenticated);
+  const isAuthenticated = UserStore((store) => store.isAuthenticated);
+  // const loggedInUser = UserStore((store) => store.user);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (toastSeverity === "error") {
-      toast.error(toastText, {
-        position: "top-right",
-        className: "foo-bar",
-        pauseOnHover: false,
-        onClose: closeToast,
-        autoClose: 1000,
-        theme: "light",
-      });
-    } else if (toastSeverity === "success") {
-      toast.success(toastText, {
-        position: "top-right",
-        onClose: closeToast,
-        className: "foo-bar",
-        pauseOnHover: false,
-        autoClose: 1000,
-        theme: "light",
-      });
-    } else {
-      return;
-    }
-  }, [toastText]);
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/signin");
     }
   }, [isAuthenticated]);
-
   useEffect(() => {
     axios
       .get("https://medguard.vercel.app/api/healthworker/dashboardstatistics", {

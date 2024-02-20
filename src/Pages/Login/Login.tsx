@@ -1,10 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import "./auth.css";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastStore, userStore } from "../../Context/States";
+import { ToastStore, UserStore } from "../../Context/States";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import {
   AccountCircle,
@@ -16,44 +15,19 @@ import {
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const toastText = ToastStore((store) => store.message);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const isAuthenticated = userStore((store) => store.isAuthenticated);
-  const user = userStore((store) => store.user);
-  const setUser = userStore((store) => store.setUser);
+  const isAuthenticated = UserStore((store) => store.isAuthenticated);
+  const user = UserStore((store) => store.user);
+  const setUser = UserStore((store) => store.setUser);
   const navigate = useNavigate();
-  const toastSeverity = ToastStore((store) => store.severity);
   const openToast = ToastStore((store) => store.openToast);
-  const closeToast = ToastStore((store) => store.closeToast);
-  useEffect(() => {
-    if (toastSeverity === "error") {
-      toast.error(toastText, {
-        position: "top-right",
-        className: "foo-bar",
-        pauseOnHover: false,
-        onClose: closeToast,
-        autoClose: 1000,
-        theme: "light",
-      });
-    } else if (toastSeverity === "success") {
-      toast.success(toastText, {
-        position: "top-right",
-        onClose: closeToast,
-        className: "foo-bar",
-        pauseOnHover: false,
-        autoClose: 1000,
-        theme: "light",
-      });
-    } else {
-      return;
-    }
-  }, [toastText]);
+
   useEffect(() => {
     if (isAuthenticated) {
+      navigate("/");
       openToast("Log in successful", "success");
     }
   }, [user]);
-
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     console.log("here");
     event.preventDefault();
@@ -63,7 +37,7 @@ function Login() {
         console.log(result);
         if (result.data.auth) {
           localStorage.setItem("token", `Bearer ${result.data.accessToken}`);
-          setUser(result.data.user);
+          setUser(result.data.user, true);
           navigate("/");
         }
       })

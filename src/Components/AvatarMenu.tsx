@@ -8,17 +8,38 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
-import { userStore } from "../Context/States";
+import { ToastStore, UserStore } from "../Context/States";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AvatarMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const loggedInUser = userStore((store) => store.user);
+  const loggedInUser = UserStore((store) => store.user);
+  const setUser = UserStore((store) => store.setUser);
+  const openToast = ToastStore((store) => store.openToast);
+  const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const logout = () => {
+    axios
+      .get("https://medguard.vercel.app/api/healthworker/logout")
+      .then((response) => {
+        if (response.data.success) {
+          localStorage.removeItem("token");
+          setUser(null, false);
+          openToast("Logged out", "success");
+          navigate("/signin");
+        }
+      })
+      .catch((error) => {
+        openToast(error.response.data.message, "error");
+      });
+    localStorage.removeItem("token");
   };
   return (
     <React.Fragment>
@@ -77,7 +98,7 @@ export default function AvatarMenu() {
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
