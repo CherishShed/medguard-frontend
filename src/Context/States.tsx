@@ -1,11 +1,19 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { AlertColor } from "@mui/material";
-import { ClerkResponseObject, ClerkUser } from "../Pages/Home/Home";
+type userType = {
+  employeeNumber: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: string;
+  phoneNumber: string;
+  changedPassword: string;
+};
 type userStoreType = {
-  user: ClerkUser | null;
+  user: userType | null;
   isAuthenticated: boolean;
-  setUser: (user: ClerkResponseObject) => void;
+  setUser: (user: userType) => void;
 };
 
 export const userStore = create<userStoreType>()((set) => ({
@@ -14,8 +22,8 @@ export const userStore = create<userStoreType>()((set) => ({
   setUser: (user) => {
     set(
       produce((store) => {
-        store.isAuthenticated = user.isSignedIn;
-        store.user = user.user;
+        store.isAuthenticated = true;
+        store.user = user;
       })
     );
   },
@@ -47,6 +55,7 @@ export const ToastStore = create<ToastType>()((set) => ({
       produce((store) => {
         store.message = "";
         store.open = false;
+        store.severity = null;
       })
     );
   },

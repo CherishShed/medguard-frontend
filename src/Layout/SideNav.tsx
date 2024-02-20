@@ -17,7 +17,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { useState } from "react";
-import { UserButton } from "@clerk/clerk-react";
+import AvatarMenu from "../Components/AvatarMenu";
 
 const drawerWidth = 240;
 
@@ -128,7 +128,7 @@ export default function SideNav() {
               <MenuIcon />
             </IconButton>
           </div>
-          <UserButton afterSignOutUrl="/signin" />
+          <AvatarMenu />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

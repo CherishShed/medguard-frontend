@@ -1,27 +1,31 @@
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import "./auth.css";
-// import axios from "axios";
+import axios from "axios";
 import { toast } from "react-toastify";
-// import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { SignIn } from "@clerk/clerk-react";
 import { ToastStore, userStore } from "../../Context/States";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import {
+  AccountCircle,
+  EnhancedEncryption,
+  VisibilityOffOutlined,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 
 function Login() {
-  // const [showPassword, setShowPassword] = useState(false);
-  // const [formData, setFormData] = useState({ username: "", password: "" });
-  // const [helpText, setHelpText] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const toastText = ToastStore((store) => store.message);
-  // const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
   const isAuthenticated = userStore((store) => store.isAuthenticated);
   const user = userStore((store) => store.user);
-
+  const setUser = userStore((store) => store.setUser);
+  const navigate = useNavigate();
   const toastSeverity = ToastStore((store) => store.severity);
   const openToast = ToastStore((store) => store.openToast);
   const closeToast = ToastStore((store) => store.closeToast);
   useEffect(() => {
-    console.log(toastText);
-    console.log(toastSeverity);
     if (toastSeverity === "error") {
       toast.error(toastText, {
         position: "top-right",
@@ -50,20 +54,23 @@ function Login() {
     }
   }, [user]);
 
-  // function handleSubmit(event: FormEvent<HTMLFormElement>) {
-  //   console.log("here");
-  //   event.preventDefault();
-  //   axios.post("http://localhost:8081/login", formData).then((result) => {
-  //     console.log(result);
-  //     settoastText(result.data.message);
-  //     setTimeout(() => {
-  //       if (result.data.success) {
-  //         localStorage.setItem("token", result.data.token);
-  //         window.location.pathname = "/";
-  //       }
-  //     }, 500);
-  //   });
-  // }
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    console.log("here");
+    event.preventDefault();
+    axios
+      .post("https://medguard.vercel.app/api/healthworker/login", formData)
+      .then((result) => {
+        console.log(result);
+        if (result.data.auth) {
+          localStorage.setItem("token", `Bearer ${result.data.accessToken}`);
+          setUser(result.data.user);
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        openToast(error.response.data.message, "error");
+      });
+  }
   window.addEventListener("load", () => {
     document.getElementById("usernameInput")?.focus();
   });
@@ -71,7 +78,7 @@ function Login() {
     <div>
       <div className="w-full h-screen">
         <div
-          className="mx-auto bg-white w-fit md:w-[80%] max-w-[900px] mt-[5%] md:flex items-center min-h-fit h-[80%] rounded-tl-3xl"
+          className="mx-auto bg-white w-fit md:w-[80%] max-w-[900px] mt-[5%] md:flex items-center min-h-fit h-[80%] rounded-tl-3xl  rounded-br-3xl shadow-2xl"
           id="loginPage"
         >
           <img
@@ -79,10 +86,8 @@ function Login() {
             alt="welcome"
             className="hidden w-[50%] h-full  rounded-tl-3xl md:flex"
           />
-          <div className="relative">
-            <SignIn signUpUrl="/signup" />
-          </div>
-          {/* <form
+
+          <form
             className="flex flex-col gap-5 bg-white items-center p-2 mx-auto"
             onSubmit={handleSubmit}
           >
@@ -94,10 +99,10 @@ function Login() {
             </div>
             <TextField
               fullWidth
-              helperText={helpText}
+              helperText={"This field is compulsory"}
               variant="standard"
-              label="Email"
-              type="email"
+              label="Employee Number"
+              type="text"
               color="warning"
               name="username"
               id="usernameInput"
@@ -107,7 +112,7 @@ function Login() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircleIcon />
+                    <AccountCircle />
                   </InputAdornment>
                 ),
               }}
@@ -123,7 +128,7 @@ function Login() {
               name="password"
               autoComplete="off"
               autoFocus={true}
-              helperText={helpText}
+              helperText={"This field is compulsory"}
               onChange={(e) => {
                 setFormData({ ...formData, password: e.target.value });
               }}
@@ -136,7 +141,7 @@ function Login() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <EnhancedEncryptionIcon />
+                    <EnhancedEncryption />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -156,12 +161,7 @@ function Login() {
                 ),
               }}
             />
-            <p className="signup-text">
-              Don't have an account?{" "}
-              <Link className="text-teal-500 font-bold" to="/signup">
-                Sign Up
-              </Link>
-            </p>
+
             <Button
               className="!bg-teal-600 w-[150px] hover:!bg-blue-500"
               type="submit"
@@ -170,7 +170,7 @@ function Login() {
             >
               Login
             </Button>
-          </form> */}
+          </form>
         </div>
       </div>
     </div>
