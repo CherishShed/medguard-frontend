@@ -5,25 +5,27 @@ import MUIDataTable, {
 import { TableStore } from "../../Context/States";
 import { IconButton, Skeleton } from "@mui/material";
 import {
+  Flag,
   MedicalInformation,
   QueryStatsRounded,
   RemoveRedEye,
 } from "@mui/icons-material";
+import { formatDate } from "../../Utils/helpers";
 
 const columns = [
   {
     name: "hospitalNumber",
     label: "Hospital Number",
     options: {
-      filter: true,
-      sort: false,
+      filter: false,
+      sort: true,
     },
   },
   {
     name: "firstName",
     label: "First Name",
     options: {
-      filter: true,
+      filter: false,
       sort: true,
     },
   },
@@ -31,15 +33,61 @@ const columns = [
     name: "lastName",
     label: "Last Name",
     options: {
+      filter: false,
+      sort: true,
+    },
+  },
+  {
+    name: "status",
+    label: "Status",
+    options: {
       filter: true,
       sort: true,
+      customBodyRender: (
+        value: unknown,
+        tableMeta: MUIDataTableMeta<unknown>
+      ) => {
+        return (
+          <p className="font-medium">
+            {value == "good" ? (
+              <Flag className="text-green-600" />
+            ) : value == "abnormal" ? (
+              <Flag className="text-yellow-600" />
+            ) : value == "bad" ? (
+              <Flag className="text-red-600" />
+            ) : (
+              ""
+            )}
+          </p>
+        );
+      },
+    },
+  },
+  {
+    name: "latestVitals",
+    label: "Last Measurement",
+    options: {
+      filter: false,
+      sort: false,
+      customBodyRender: (
+        value: unknown,
+        tableMeta: MUIDataTableMeta<unknown>
+      ) => {
+        return (
+          <p className="font-medium">
+            {" "}
+            {value.blood_pressure} - {value.heart_beat} BPM
+            <span className="block text-xs">{formatDate(value.updatedAt)}</span>
+          </p>
+        );
+      },
     },
   },
   {
     name: "actions",
     label: "Actions",
     options: {
-      filter: true,
+      filter: false,
       sort: false,
       customBodyRender: (
         value: unknown,
@@ -66,26 +114,6 @@ const columns = [
               />
             </IconButton>
           </div>
-        );
-      },
-    },
-  },
-  {
-    name: "vitals",
-    label: "Last Measurement",
-    options: {
-      filter: true,
-      sort: false,
-      customBodyRender: (
-        value: unknown,
-        tableMeta: MUIDataTableMeta<unknown>
-      ) => {
-        console.log(value, tableMeta);
-        console.log(value.blood_pressure, value.heart_beat);
-        return (
-          <p>
-            {value.blood_pressure} - {value.heart_beat}BPM
-          </p>
         );
       },
     },
