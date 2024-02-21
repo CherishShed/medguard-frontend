@@ -1,8 +1,10 @@
-import MUIDataTable, { MUIDataTableOptions } from "mui-datatables";
+import MUIDataTable, {
+  MUIDataTableMeta,
+  MUIDataTableOptions,
+} from "mui-datatables";
 import { TableStore } from "../../Context/States";
 import { IconButton } from "@mui/material";
 import {
-  Edit,
   MedicalInformation,
   QueryStatsRounded,
   RemoveRedEye,
@@ -39,7 +41,11 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-      customBodyRender: (value: string, tableMeta: object[]) => {
+      customBodyRender: (
+        value: unknown,
+        tableMeta: MUIDataTableMeta<unknown>
+      ) => {
+        console.log(value, tableMeta);
         return (
           <div className="flex gap-3 items-center">
             <IconButton onClick={() => console.log("view")}>
