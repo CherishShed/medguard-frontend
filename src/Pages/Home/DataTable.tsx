@@ -3,7 +3,7 @@ import MUIDataTable, {
   MUIDataTableOptions,
 } from "mui-datatables";
 import { TableStore } from "../../Context/States";
-import { IconButton } from "@mui/material";
+import { IconButton, Skeleton } from "@mui/material";
 import {
   MedicalInformation,
   QueryStatsRounded,
@@ -45,7 +45,6 @@ const columns = [
         value: unknown,
         tableMeta: MUIDataTableMeta<unknown>
       ) => {
-        console.log(value, tableMeta);
         return (
           <div className="flex gap-3 items-center">
             <IconButton onClick={() => console.log("view")}>
@@ -71,6 +70,26 @@ const columns = [
       },
     },
   },
+  {
+    name: "vitals",
+    label: "Last Measurement",
+    options: {
+      filter: true,
+      sort: false,
+      customBodyRender: (
+        value: unknown,
+        tableMeta: MUIDataTableMeta<unknown>
+      ) => {
+        console.log(value, tableMeta);
+        console.log(value.blood_pressure, value.heart_beat);
+        return (
+          <p>
+            {value.blood_pressure} - {value.heart_beat}BPM
+          </p>
+        );
+      },
+    },
+  },
 ];
 const options = {
   filterType: "checkbox",
@@ -80,12 +99,16 @@ function DataTable() {
   const data = TableStore((store) => store.data);
   return (
     <div>
-      <MUIDataTable
-        title={"Patients List"}
-        data={data as object[]}
-        columns={columns}
-        options={options as MUIDataTableOptions}
-      />
+      {!data ? (
+        <Skeleton width={"100%"} height={"50vh"} animation="wave" />
+      ) : (
+        <MUIDataTable
+          title={"Patients List"}
+          data={data as object[]}
+          columns={columns}
+          options={options as MUIDataTableOptions}
+        />
+      )}
     </div>
   );
 }

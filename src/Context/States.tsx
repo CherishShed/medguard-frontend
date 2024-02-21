@@ -39,12 +39,12 @@ export const UserStore = create<userStoreType>()((set) => ({
 }));
 
 type dataTableType = {
-  data: patientType[] | object[];
+  data: patientType[] | object[] | null;
   setTableData: (data: patientType[]) => void;
 };
 
 export const TableStore = create<dataTableType>()((set) => ({
-  data: [{}],
+  data: null,
   setTableData: (data) => {
     set(
       produce((store) => {

@@ -28,7 +28,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
-  backgroundColor: "#D2E3C8",
+  backgroundColor: "#BFEA7C",
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
@@ -37,7 +37,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  backgroundColor: "#D2E3C8",
+  backgroundColor: "#BFEA7C",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -84,7 +84,6 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  backgroundColor: "red",
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -111,7 +110,7 @@ export default function SideNav() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar className="flex justify-between bg-[#739072]">
+        <Toolbar className="flex justify-between bg-[#416D19]">
           <div className="flex gap-6">
             {!open && (
               <img
