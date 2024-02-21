@@ -1,5 +1,5 @@
 import MUIDataTable, {
-  MUIDataTableMeta,
+  //   MUIDataTableMeta,
   MUIDataTableOptions,
 } from "mui-datatables";
 import { TableStore } from "../../Context/States";
@@ -43,10 +43,7 @@ const columns = [
     options: {
       filter: true,
       sort: true,
-      customBodyRender: (
-        value: unknown,
-        tableMeta: MUIDataTableMeta<unknown>
-      ) => {
+      customBodyRender: (value: unknown) => {
         return (
           <p className="font-medium">
             {value == "good" ? (
@@ -69,10 +66,12 @@ const columns = [
     options: {
       filter: false,
       sort: false,
-      customBodyRender: (
-        value: unknown,
-        tableMeta: MUIDataTableMeta<unknown>
-      ) => {
+      customBodyRender: (value: {
+        blood_pressure: string;
+        heart_beat: number;
+        blood_oxygen: number;
+        updatedAt: string;
+      }) => {
         return (
           <p className="font-medium">
             {" "}
@@ -89,33 +88,32 @@ const columns = [
     options: {
       filter: false,
       sort: false,
-      customBodyRender: (
-        value: unknown,
-        tableMeta: MUIDataTableMeta<unknown>
-      ) => {
-        return (
-          <div className="flex gap-3 items-center">
-            <IconButton onClick={() => console.log("view")}>
-              <RemoveRedEye
-                className="text-green-500"
-                titleAccess="View Patient Info"
-              />
-            </IconButton>
-            <IconButton onClick={() => console.log("edit")}>
-              <MedicalInformation
-                className="text-blue-500"
-                titleAccess="View Patient Medication"
-              />
-            </IconButton>
-            <IconButton onClick={() => console.log("edit")}>
-              <QueryStatsRounded
-                className="text-red-500"
-                titleAccess="View Patient Vitals"
-              />
-            </IconButton>
-          </div>
-        );
-      },
+      customBodyRender: () =>
+        // value: unknown
+        {
+          return (
+            <div className="flex gap-3 items-center">
+              <IconButton onClick={() => console.log("view")}>
+                <RemoveRedEye
+                  className="text-green-500"
+                  titleAccess="View Patient Info"
+                />
+              </IconButton>
+              <IconButton onClick={() => console.log("edit")}>
+                <MedicalInformation
+                  className="text-blue-500"
+                  titleAccess="View Patient Medication"
+                />
+              </IconButton>
+              <IconButton onClick={() => console.log("edit")}>
+                <QueryStatsRounded
+                  className="text-red-500"
+                  titleAccess="View Patient Vitals"
+                />
+              </IconButton>
+            </div>
+          );
+        },
     },
   },
 ];
