@@ -1,7 +1,12 @@
 import MUIDataTable, { MUIDataTableOptions } from "mui-datatables";
 import { TableStore } from "../../Context/States";
 import { IconButton } from "@mui/material";
-import { Edit, RemoveRedEye } from "@mui/icons-material";
+import {
+  Edit,
+  MedicalInformation,
+  QueryStatsRounded,
+  RemoveRedEye,
+} from "@mui/icons-material";
 
 const columns = [
   {
@@ -30,18 +35,30 @@ const columns = [
   },
   {
     name: "actions",
-    label: "actions",
+    label: "Actions",
     options: {
       filter: true,
       sort: false,
       customBodyRender: (value: string, tableMeta: object[]) => {
         return (
-          <div className="flex gap-3 items-center justify-center">
+          <div className="flex gap-3 items-center">
             <IconButton onClick={() => console.log("view")}>
-              <RemoveRedEye />
+              <RemoveRedEye
+                className="text-green-500"
+                titleAccess="View Patient Info"
+              />
             </IconButton>
             <IconButton onClick={() => console.log("edit")}>
-              <Edit />
+              <MedicalInformation
+                className="text-blue-500"
+                titleAccess="View Patient Medication"
+              />
+            </IconButton>
+            <IconButton onClick={() => console.log("edit")}>
+              <QueryStatsRounded
+                className="text-red-500"
+                titleAccess="View Patient Vitals"
+              />
             </IconButton>
           </div>
         );
