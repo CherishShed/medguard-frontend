@@ -11,25 +11,28 @@ import {
   VisibilityOffOutlined,
   VisibilityOutlined,
 } from "@mui/icons-material";
+import { checkAuth } from "../../Utils/helpers";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ username: "", password: "" });
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const isAuthenticated = UserStore((store) => store.isAuthenticated);
-  const user = UserStore((store) => store.user);
   const setUser = UserStore((store) => store.setUser);
   const navigate = useNavigate();
   const openToast = ToastStore((store) => store.openToast);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-      openToast("Log in successful", "success");
-    }
-  }, [user]);
+    checkAuth().then((response) => {
+      if (response.auth) {
+        openToast("Log in successful", "success");
+        setUser(response.user, true);
+        navigate("/");
+      } else {
+        setUser(null, false);
+      }
+    });
+  }, []);
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    console.log("here");
     event.preventDefault();
     axios
       .post("https://medguard.vercel.app/api/healthworker/login", formData)
@@ -38,6 +41,7 @@ function Login() {
         if (result.data.auth) {
           localStorage.setItem("token", `Bearer ${result.data.accessToken}`);
           setUser(result.data.user, true);
+          openToast("Log in successful", "success");
           navigate("/");
         }
       })

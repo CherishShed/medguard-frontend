@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { AlertColor } from "@mui/material";
-import { persist } from "zustand/middleware";
 import { toast } from "react-toastify";
 type userType = {
   employeeNumber: string;
@@ -18,23 +17,18 @@ type userStoreType = {
   setUser: (user: userType | null, authStatus: boolean) => void;
 };
 
-export const UserStore = create<userStoreType>()(
-  persist(
-    (set) => ({
-      isAuthenticated: false,
-      user: null,
-      setUser: (user, authStatus) => {
-        set(
-          produce((store) => {
-            store.isAuthenticated = authStatus;
-            store.user = user;
-          })
-        );
-      },
-    }),
-    { name: "userStore" }
-  )
-);
+export const UserStore = create<userStoreType>()((set) => ({
+  isAuthenticated: false,
+  user: null,
+  setUser: (user, authStatus) => {
+    set(
+      produce((store) => {
+        store.isAuthenticated = authStatus;
+        store.user = user;
+      })
+    );
+  },
+}));
 
 type ToastType = {
   open: boolean;
