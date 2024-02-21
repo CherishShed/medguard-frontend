@@ -18,6 +18,7 @@ function Login() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const setUser = UserStore((store) => store.setUser);
+  // const user = UserStore((store) => store.user);
   const navigate = useNavigate();
   const openToast = ToastStore((store) => store.openToast);
 
@@ -31,6 +32,7 @@ function Login() {
         setUser(null, false);
       }
     });
+    return;
   }, []);
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

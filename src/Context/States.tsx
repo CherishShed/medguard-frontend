@@ -72,6 +72,7 @@ export const ToastStore = create<ToastType>()((set) => ({
         store.message = message;
         store.open = true;
         store.severity = severity;
+        console.log("in here");
         notify(message, severity, store);
       })
     );

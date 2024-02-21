@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserStore } from "../../Context/States";
+import { ToastStore, UserStore } from "../../Context/States";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { Medication, PersonAdd, ShowChart } from "@mui/icons-material";
@@ -13,7 +13,7 @@ type statsType = {
   vitalCount: { warningCount: number; badCount: number };
 };
 function Home() {
-  // const openToast = ToastStore((store) => store.openToast);
+  const openToast = ToastStore((store) => store.openToast);
   const [stats, setStats] = useState<statsType | null>(null);
   const isAuthenticated = UserStore((store) => store.isAuthenticated);
   const setUser = UserStore((store) => store.setUser);
@@ -24,6 +24,7 @@ function Home() {
     checkAuth().then((response) => {
       if (!response.auth) {
         setUser(null, false);
+        openToast("Please Log in", "error");
         navigate("/signin");
       } else {
         setUser(response.user, true);
