@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const checkAuth = async () => {
   try {
@@ -8,6 +8,6 @@ export const checkAuth = async () => {
     );
     return isLoggedIn.data;
   } catch (error) {
-    return error.response.data;
+    return (error as AxiosError).response!.data;
   }
 };
