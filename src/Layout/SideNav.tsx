@@ -17,6 +17,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import AvatarMenu from "../Components/AvatarMenu";
 import { Dashboard, MedicationLiquid, QueryStats } from "@mui/icons-material";
+import { Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -49,6 +50,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   backgroundColor: "white",
+  overflow: "hidden",
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -222,6 +224,7 @@ export default function SideNav() {
           </ListItem>
         </List>
       </Drawer>
+      <Outlet />
     </Box>
   );
 }

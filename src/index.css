@@ -6,4 +6,25 @@
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif !important;
   font-optical-sizing: auto;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: fit-content !important;
+}
+
+*::-webkit-scrollbar {
+  width: 15px;
+  height: 3px;
+  background-color: #fbfada;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #12372a;
+}
+
+*::-webkit-scrollbar-button {
+  background-color: white;
+  border: 2px solid green;
 }

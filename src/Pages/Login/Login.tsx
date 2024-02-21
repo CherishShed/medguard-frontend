@@ -27,7 +27,7 @@ function Login() {
       if (response.auth) {
         openToast("Log in successful", "success");
         setUser(response.user, true);
-        navigate("/");
+        navigate("/dashboard");
       } else {
         setUser(null, false);
       }
@@ -44,7 +44,7 @@ function Login() {
           localStorage.setItem("token", `Bearer ${result.data.accessToken}`);
           setUser(result.data.user, true);
           openToast("Log in successful", "success");
-          navigate("/");
+          navigate("/dashboard");
         }
       })
       .catch((error) => {

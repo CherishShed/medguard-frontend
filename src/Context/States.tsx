@@ -11,6 +11,14 @@ type userType = {
   phoneNumber: string;
   changedPassword: string;
 };
+
+type patientType = {
+  firstName: string;
+  lastName: string;
+  vitals: string;
+  hospitalNumber: string;
+  gender: string;
+};
 type userStoreType = {
   user: userType | null;
   isAuthenticated: boolean;
@@ -30,6 +38,21 @@ export const UserStore = create<userStoreType>()((set) => ({
   },
 }));
 
+type dataTableType = {
+  data: patientType[] | object[];
+  setTableData: (data: patientType[]) => void;
+};
+
+export const TableStore = create<dataTableType>()((set) => ({
+  data: [{}],
+  setTableData: (data) => {
+    set(
+      produce((store) => {
+        store.data = data;
+      })
+    );
+  },
+}));
 type ToastType = {
   open: boolean;
   message: string;

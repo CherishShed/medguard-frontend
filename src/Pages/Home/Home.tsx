@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { ToastStore, UserStore } from "../../Context/States";
+import { TableStore, ToastStore, UserStore } from "../../Context/States";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { Medication, PersonAdd, ShowChart } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import SideNav from "../../Layout/SideNav";
 import { checkAuth } from "../../Utils/helpers";
+import DataTable from "./DataTable";
 
 type statsType = {
   patientsNumber: number;
@@ -17,6 +17,7 @@ function Home() {
   const [stats, setStats] = useState<statsType | null>(null);
   const isAuthenticated = UserStore((store) => store.isAuthenticated);
   const setUser = UserStore((store) => store.setUser);
+  const setTableData = TableStore((store) => store.setTableData);
   // const loggedInUser = UserStore((store) => store.user);
   const navigate = useNavigate();
 
@@ -39,16 +40,22 @@ function Home() {
       .then((statistics) => {
         setStats(statistics.data);
       });
+    axios
+      .get("https://medguard.vercel.app/api/healthworker/patients", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setTableData(response.data.patients);
+      });
   }, []);
   return (
-    <div className="bg-white h-screen">
+    <div className="bg-white overflow-auto w-full h-full min-h-screen">
       {!isAuthenticated && (
         <CircularProgress className="!w-[200px] !h-[200px] mx-auto mt-[20%] !text-lime-700 !block" />
       )}
       {isAuthenticated && (
         <>
-          <SideNav />
-          <section className="ml-[100px] mt-[100px]">
+          <section className="mt-[100px] p-5 h-full">
             <div className="flex gap-5 mx-auto justify-evenly">
               <div className="flex flex-col justify-between rounded-xl border-2 border-lime-500 h-[170px] w-[200px] px-3 py-3 bg-lime-200">
                 <div className="flex items-center justify-evenly">
@@ -111,6 +118,9 @@ function Home() {
                   Dangerous Readings
                 </p>
               </div>
+            </div>
+            <div className="mt-9 w-full px-5">
+              <DataTable />
             </div>
           </section>
         </>
