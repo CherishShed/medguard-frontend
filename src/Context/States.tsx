@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { produce } from "immer";
 import { AlertColor } from "@mui/material";
 import { toast } from "react-toastify";
-type userType = {
+export type userType = {
   employeeNumber: string;
   firstName: string;
   lastName: string;
@@ -12,12 +12,18 @@ type userType = {
   changedPassword: string;
 };
 
-type patientType = {
+export type patientType = {
   firstName: string;
   lastName: string;
   vitals: string;
   hospitalNumber: string;
   gender: string;
+  bloodgroup: string;
+  dateOfBirth: string;
+  genotype: string;
+  phone_number: 1;
+  emergencyContact1: string;
+  emergencyContact2: string;
 };
 type userStoreType = {
   user: userType | null;
@@ -53,6 +59,7 @@ export const TableStore = create<dataTableType>()((set) => ({
     );
   },
 }));
+
 type ToastType = {
   open: boolean;
   message: string;
@@ -111,44 +118,37 @@ export const ToastStore = create<ToastType>()((set) => ({
   },
 }));
 
-// // type detailsModal = {
-// //   open: boolean;
-// //   showModal: () => void;
-// //   hideModal: () => void;
-// //   type: string | null;
-// //   modalDetails: TVShow | null;
-// //   setModalDetails: (
-// //     details: TVShow | null,
-// //     cast: movieCredits | null,
-// //     type: string | null
-// //   ) => void;
-// // };
+type detailsModal = {
+  open: boolean;
+  showModal: () => void;
+  hideModal: () => void;
+  modalDetails: patientType | null;
+  setModalDetails: (details: patientType | null) => void;
+};
 
-// // export const modalStore = create<detailsModal>()((set) => ({
-// //   open: false,
-// //   modalDetails: null,
-// //   type: null,
-// //   setModalDetails: (details, cast, type) => {
-// //     set(
-// //       produce((store) => {
-// //         store.type = type;
-// //         store.modalDetails = details;
-// //         store.modalDetails.cast = cast;
-// //       })
-// //     );
-// //   },
-// //   showModal: () => {
-// //     set(
-// //       produce((store) => {
-// //         store.open = true;
-// //       })
-// //     );
-// //   },
-// //   hideModal: () => {
-// //     set(
-// //       produce((store) => {
-// //         store.open = false;
-// //       })
-// //     );
-// //   },
-// // }));
+export const ModalStore = create<detailsModal>()((set) => ({
+  open: false,
+  modalDetails: null,
+  setModalDetails: (details) => {
+    set(
+      produce((store) => {
+        store.modalDetails = details;
+      })
+    );
+  },
+  showModal: () => {
+    set(
+      produce((store) => {
+        store.open = true;
+      })
+    );
+  },
+  hideModal: () => {
+    set(
+      produce((store) => {
+        store.open = false;
+        store.modalDetails = null;
+      })
+    );
+  },
+}));

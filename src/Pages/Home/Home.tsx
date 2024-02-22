@@ -5,7 +5,7 @@ import axios from "axios";
 import { Medication, PersonAdd, ShowChart } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { checkAuth } from "../../Utils/helpers";
-import DataTable from "./DataTable";
+import DataTable from "../../Components/DataTable";
 
 type statsType = {
   patientsNumber: number;
@@ -38,6 +38,9 @@ function Home() {
       })
       .then((statistics) => {
         setStats(statistics.data);
+      })
+      .catch((error) => {
+        openToast(error.message, "error");
       });
     axios
       .get("https://medguard.vercel.app/api/healthworker/patients", {
@@ -45,6 +48,9 @@ function Home() {
       })
       .then((response) => {
         setTableData(response.data.patients);
+      })
+      .catch((error) => {
+        openToast(error.message, "error");
       });
   }, []);
   return (
