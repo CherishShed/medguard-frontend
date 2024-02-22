@@ -25,11 +25,12 @@ function Home() {
       if (!response.auth) {
         setUser(null, false);
         openToast("Please Log in", "error");
-        navigate("/signin");
+        return navigate("/signin");
       } else {
         setUser(response.user, true);
       }
     });
+    return;
   }, []);
   useEffect(() => {
     axios
@@ -40,6 +41,7 @@ function Home() {
         setStats(statistics.data);
       })
       .catch((error) => {
+        console.log(error);
         openToast(error.message, "error");
       });
     axios
@@ -50,7 +52,7 @@ function Home() {
         setTableData(response.data.patients);
       })
       .catch((error) => {
-        openToast(error.message, "error");
+        // openToast(error.message, "error");
       });
   }, []);
   return (

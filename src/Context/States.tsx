@@ -21,6 +21,7 @@ export type patientType = {
   bloodgroup: string;
   dateOfBirth: string;
   genotype: string;
+  status: string;
   phone_number: 1;
   emergencyContact1: string;
   emergencyContact2: string;

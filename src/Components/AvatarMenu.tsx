@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
-import { ToastStore, UserStore } from "../Context/States";
+import { TableStore, ToastStore, UserStore } from "../Context/States";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,8 @@ export default function AvatarMenu() {
   const open = Boolean(anchorEl);
   const loggedInUser = UserStore((store) => store.user);
   const setUser = UserStore((store) => store.setUser);
+  const setTableData = TableStore((store) => store.setTableData);
+
   const openToast = ToastStore((store) => store.openToast);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,6 +34,7 @@ export default function AvatarMenu() {
         if (response.data.success) {
           localStorage.removeItem("token");
           setUser(null, false);
+          setTableData([]);
           openToast("Logged out", "success");
           navigate("/signin");
         }

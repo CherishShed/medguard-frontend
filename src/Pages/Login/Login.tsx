@@ -56,7 +56,7 @@ function Login() {
   });
   return (
     <div>
-      <div className="w-full h-screen">
+      <div className="w-full h-screen md:overflow-hidden">
         <div
           className="mx-auto bg-white w-fit md:w-[80%] max-w-[900px] mt-[5%] md:flex items-center min-h-fit h-[80%] rounded-tl-3xl  rounded-br-3xl shadow-2xl"
           id="loginPage"
