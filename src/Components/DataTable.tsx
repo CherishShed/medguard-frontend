@@ -16,6 +16,8 @@ import axios from "axios";
 function DataTable() {
   const data = TableStore((store) => store.data);
   const openToast = ToastStore((store) => store.openToast);
+  const setModalDetails = ModalStore((store) => store.setModalDetails);
+  const showModal = ModalStore((store) => store.showModal);
   const columns = [
     {
       name: "hospitalNumber",
@@ -94,10 +96,12 @@ function DataTable() {
       options: {
         filter: false,
         sort: false,
-        customBodyRender: (value: unknown, tableMeta: MUIDataTableMeta) => {
+        customBodyRender: function Actions(
+          value: unknown,
+          tableMeta: MUIDataTableMeta
+        ) {
           console.log(tableMeta.rowData[0]);
-          const setModalDetails = ModalStore((store) => store.setModalDetails);
-          const showModal = ModalStore((store) => store.showModal);
+
           const setData = () => {
             axios
               .get(
