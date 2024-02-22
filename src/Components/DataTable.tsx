@@ -100,7 +100,7 @@ function DataTable() {
           value: unknown,
           tableMeta: MUIDataTableMeta
         ) {
-          console.log(tableMeta.rowData[0]);
+          console.log(value);
 
           const setData = () => {
             axios
