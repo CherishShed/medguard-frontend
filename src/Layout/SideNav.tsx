@@ -17,7 +17,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import AvatarMenu from "../Components/AvatarMenu";
 import { Dashboard, MedicationLiquid, QueryStats } from "@mui/icons-material";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -113,11 +113,13 @@ export default function SideNav() {
         <Toolbar className="flex justify-between bg-[#416D19]">
           <div className="flex gap-6">
             {!open && (
-              <img
-                src="/logoSign.png"
-                alt="logo"
-                className="h-12 rounded-full"
-              />
+              <Link to="/">
+                <img
+                  src="/logoSign.png"
+                  alt="logo"
+                  className="h-12 rounded-full"
+                />
+              </Link>
             )}
             <IconButton
               color="inherit"
@@ -148,33 +150,36 @@ export default function SideNav() {
         </DrawerHeader>
         <Divider />
         <List className="gap-7 flex flex-col">
-          <ListItem
-            disablePadding
-            sx={{ display: "block", borderBottom: "2px solid white" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
+          <Link to="/dashboard">
+            <ListItem
+              disablePadding
+              sx={{ display: "block", borderBottom: "2px solid white" }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
               >
-                <Dashboard />
-              </ListItemIcon>
-              <ListItemText
-                className="!font-bold"
-                primary="Dashboard"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Dashboard />
+                </ListItemIcon>
+
+                <ListItemText
+                  className="!font-bold"
+                  primary="Dashboard"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
           <ListItem
             disablePadding
             sx={{ display: "block", borderBottom: "2px solid white" }}
@@ -195,10 +200,9 @@ export default function SideNav() {
               >
                 <MedicationLiquid />
               </ListItemIcon>
-              <ListItemText
-                primary="Medication"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
+              <ListItemText primary="Medication" sx={{ opacity: open ? 1 : 0 }}>
+                <Link to={"/"} />
+              </ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding sx={{ display: "block" }}>

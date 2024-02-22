@@ -12,6 +12,7 @@ import {
 } from "@mui/icons-material";
 import { formatDate } from "../Utils/helpers";
 import axios from "axios";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function DataTable() {
   const data = TableStore((store) => store.data);
@@ -149,11 +150,31 @@ function DataTable() {
       },
     },
   ];
-  const options = {
+
+  const getMuiTheme = () =>
+    createTheme({
+      components: {
+        MUIDataTable: {
+          styleOverrides: {
+            root: {
+              maxHeight: 500,
+              position: "relative",
+              overflowY: "scroll",
+              height: "fit-content",
+            },
+          },
+        },
+      },
+    });
+
+  const options: MUIDataTableOptions = {
     filterType: "checkbox",
+    onChangePage: (currentPage) => {
+      console.log(currentPage);
+    },
   };
   return (
-    <div>
+    <ThemeProvider theme={getMuiTheme}>
       {!data ? (
         <Skeleton width={"100%"} height={"50vh"} animation="wave" />
       ) : (
@@ -164,7 +185,7 @@ function DataTable() {
           options={options as MUIDataTableOptions}
         />
       )}
-    </div>
+    </ThemeProvider>
   );
 }
 

@@ -221,7 +221,7 @@ export default function PatientModal() {
               )}
             </div>
           </div>
-          <hr className="border-2 border-[#BFEA7C]" />
+          <hr className="border-1 border-[#BFEA7C]" />
           <div className="flex items-center justify-between">
             <Button color="primary" variant="contained" size="large">
               View Vitals

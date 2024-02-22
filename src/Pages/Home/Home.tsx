@@ -41,8 +41,9 @@ function Home() {
         setStats(statistics.data);
       })
       .catch((error) => {
-        console.log(error);
-        openToast(error.message, "error");
+        if (error.response.status != 401) {
+          openToast(error.message, "error");
+        }
       });
     axios
       .get("https://medguard.vercel.app/api/healthworker/patients", {
@@ -52,7 +53,9 @@ function Home() {
         setTableData(response.data.patients);
       })
       .catch((error) => {
-        // openToast(error.message, "error");
+        if (error.response.status != 401) {
+          openToast(error.message, "error");
+        }
       });
   }, []);
   return (
@@ -60,10 +63,10 @@ function Home() {
       <>
         <section className="mt-[100px] p-5 h-full">
           <div className="flex gap-5 mx-auto justify-evenly">
-            <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[170px] w-[200px] px-3 py-3 bg-green-200">
+            <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[140px] w-[200px] px-3 py-3 bg-green-200">
               <div className="flex items-center justify-evenly">
                 {stats ? (
-                  <p className="text-8xl max-w-[70%] text-black">
+                  <p className="text-7xl max-w-[70%] text-black">
                     {stats?.patientsNumber}
                   </p>
                 ) : (
@@ -76,10 +79,10 @@ function Home() {
                 Total Patients
               </p>
             </div>
-            <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[170px] w-[200px] px-3 py-3 bg-sky-200">
+            <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[140px] w-[200px] px-3 py-3 bg-sky-200">
               <div className="flex items-center justify-evenly">
                 {stats ? (
-                  <p className="text-8xl max-w-[70%] text-black">
+                  <p className="text-7xl max-w-[70%] text-black">
                     {stats?.patientsOnMedication}
                   </p>
                 ) : (
@@ -91,10 +94,10 @@ function Home() {
                 Active Medications
               </p>
             </div>
-            <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[170px] w-[200px] px-3 py-3 bg-orange-200">
+            <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[140px] w-[200px] px-3 py-3 bg-orange-200">
               <div className="flex items-center justify-evenly">
                 {stats ? (
-                  <p className="text-8xl max-w-[70%] text-black">
+                  <p className="text-7xl max-w-[70%] text-black">
                     {stats?.vitalCount.warningCount}
                   </p>
                 ) : (
@@ -106,10 +109,10 @@ function Home() {
                 Abormal Readings
               </p>
             </div>
-            <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[170px] w-[200px] px-3 py-3 bg-red-200">
+            <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[140px] w-[200px] px-3 py-3 bg-red-200">
               <div className="flex items-center justify-evenly">
                 {stats ? (
-                  <p className="text-8xl max-w-[70%] text-black">
+                  <p className="text-7xl max-w-[70%] text-black">
                     {stats?.vitalCount.badCount}
                   </p>
                 ) : (
@@ -122,7 +125,7 @@ function Home() {
               </p>
             </div>
           </div>
-          <div className="mt-9 w-full px-5">
+          <div className="mt-9 w-full px-5 table-container">
             <DataTable />
           </div>
         </section>
