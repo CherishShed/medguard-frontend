@@ -17,7 +17,6 @@ function Home() {
   const [stats, setStats] = useState<statsType | null>(null);
   const setUser = UserStore((store) => store.setUser);
   const setTableData = TableStore((store) => store.setTableData);
-  // const loggedInUser = UserStore((store) => store.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,76 +59,74 @@ function Home() {
   }, []);
   return (
     <div className="bg-white overflow-auto w-full h-full min-h-screen">
-      <>
-        <section className="mt-[100px] p-5 h-full">
-          <div className="flex gap-5 mx-auto justify-evenly">
-            <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[140px] w-[200px] px-3 py-3 bg-green-200">
-              <div className="flex items-center justify-evenly">
-                {stats ? (
-                  <p className="text-7xl max-w-[70%] text-black">
-                    {stats?.patientsNumber}
-                  </p>
-                ) : (
-                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
-                )}
+      <section className="mt-[100px] p-5 h-full">
+        <div className="flex gap-5 mx-auto justify-evenly">
+          <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[140px] w-[200px] px-3 py-3 bg-green-200">
+            <div className="flex items-center justify-evenly">
+              {stats ? (
+                <p className="text-7xl max-w-[70%] text-black">
+                  {stats?.patientsNumber}
+                </p>
+              ) : (
+                <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+              )}
 
-                <PersonAdd color="success" className="!text-5xl" />
-              </div>
-              <p className="text-xl font-bold block text-green-700 text-center">
-                Total Patients
-              </p>
+              <PersonAdd color="success" className="!text-5xl" />
             </div>
-            <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[140px] w-[200px] px-3 py-3 bg-sky-200">
-              <div className="flex items-center justify-evenly">
-                {stats ? (
-                  <p className="text-7xl max-w-[70%] text-black">
-                    {stats?.patientsOnMedication}
-                  </p>
-                ) : (
-                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
-                )}
-                <Medication color="primary" className="!text-5xl" />
-              </div>
-              <p className="text-xl font-bold block text-sky-700 text-center">
-                Active Medications
-              </p>
-            </div>
-            <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[140px] w-[200px] px-3 py-3 bg-orange-200">
-              <div className="flex items-center justify-evenly">
-                {stats ? (
-                  <p className="text-7xl max-w-[70%] text-black">
-                    {stats?.vitalCount.warningCount}
-                  </p>
-                ) : (
-                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
-                )}
-                <ShowChart color="warning" className="!text-5xl" />
-              </div>
-              <p className="text-xl font-bold block text-yellow-700 text-center">
-                Abormal Readings
-              </p>
-            </div>
-            <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[140px] w-[200px] px-3 py-3 bg-red-200">
-              <div className="flex items-center justify-evenly">
-                {stats ? (
-                  <p className="text-7xl max-w-[70%] text-black">
-                    {stats?.vitalCount.badCount}
-                  </p>
-                ) : (
-                  <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
-                )}
-                <ShowChart color="error" className="!text-5xl" />
-              </div>
-              <p className="text-xl font-bold block text-red-700 text-center">
-                Dangerous Readings
-              </p>
-            </div>
+            <p className="text-xl font-bold block text-green-700 text-center">
+              Total Patients
+            </p>
           </div>
-          <div className="mt-9 w-full px-5 table-container">
-            <DataTable />
+          <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[140px] w-[200px] px-3 py-3 bg-sky-200">
+            <div className="flex items-center justify-evenly">
+              {stats ? (
+                <p className="text-7xl max-w-[70%] text-black">
+                  {stats?.patientsOnMedication}
+                </p>
+              ) : (
+                <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+              )}
+              <Medication color="primary" className="!text-5xl" />
+            </div>
+            <p className="text-xl font-bold block text-sky-700 text-center">
+              Active Medications
+            </p>
           </div>
-        </section>
-      </>
+          <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[140px] w-[200px] px-3 py-3 bg-orange-200">
+            <div className="flex items-center justify-evenly">
+              {stats ? (
+                <p className="text-7xl max-w-[70%] text-black">
+                  {stats?.vitalCount.warningCount}
+                </p>
+              ) : (
+                <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+              )}
+              <ShowChart color="warning" className="!text-5xl" />
+            </div>
+            <p className="text-xl font-bold block text-yellow-700 text-center">
+              Abormal Readings
+            </p>
+          </div>
+          <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[140px] w-[200px] px-3 py-3 bg-red-200">
+            <div className="flex items-center justify-evenly">
+              {stats ? (
+                <p className="text-7xl max-w-[70%] text-black">
+                  {stats?.vitalCount.badCount}
+                </p>
+              ) : (
+                <CircularProgress className="!w-[50px] !h-[50px] mx-auto mt-[10%] !text-black !block" />
+              )}
+              <ShowChart color="error" className="!text-5xl" />
+            </div>
+            <p className="text-xl font-bold block text-red-700 text-center">
+              Dangerous Readings
+            </p>
+          </div>
+        </div>
+        <div className="mt-9 w-full px-5 table-container">
+          <DataTable />
+        </div>
+      </section>
     </div>
   );
 }

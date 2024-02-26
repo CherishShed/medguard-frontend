@@ -18,6 +18,7 @@ import { useState } from "react";
 import AvatarMenu from "../Components/AvatarMenu";
 import { Dashboard, MedicationLiquid, QueryStats } from "@mui/icons-material";
 import { Link, Outlet } from "react-router-dom";
+import PatientModal from "../Components/PatientModal";
 
 const drawerWidth = 240;
 
@@ -180,31 +181,36 @@ export default function SideNav() {
               </ListItemButton>
             </ListItem>
           </Link>
-          <ListItem
-            disablePadding
-            sx={{ display: "block", borderBottom: "2px solid white" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
+          <Link to="/medication">
+            <ListItem
+              disablePadding
+              sx={{ display: "block", borderBottom: "2px solid white" }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
               >
-                <MedicationLiquid />
-              </ListItemIcon>
-              <ListItemText primary="Medication" sx={{ opacity: open ? 1 : 0 }}>
-                <Link to={"/"} />
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  <MedicationLiquid />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Medication"
+                  sx={{ opacity: open ? 1 : 0 }}
+                >
+                  <Link to={"/"} />
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </Link>
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
               sx={{
@@ -227,6 +233,7 @@ export default function SideNav() {
           </ListItem>
         </List>
       </Drawer>
+      <PatientModal />
       <Outlet />
     </Box>
   );

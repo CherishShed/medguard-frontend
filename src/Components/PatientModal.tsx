@@ -5,6 +5,7 @@ import Fade from "@mui/material/Fade";
 import { ModalStore } from "../Context/States";
 import { Button, Chip, Skeleton, TextField } from "@mui/material";
 import { formatNormalDate } from "../Utils/helpers";
+import { Link } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -223,12 +224,26 @@ export default function PatientModal() {
           </div>
           <hr className="border-1 border-[#BFEA7C]" />
           <div className="flex items-center justify-between">
-            <Button color="primary" variant="contained" size="large">
-              View Vitals
-            </Button>
-            <Button color="warning" variant="contained" size="large">
-              View Medication
-            </Button>
+            <Link to="">
+              <Button color="primary" variant="contained" size="large">
+                View Vitals
+              </Button>
+            </Link>
+            <Link
+              to={{
+                pathname: `medication`,
+                search: `hospitalNumber=${
+                  modalDetails
+                    ? encodeURIComponent(modalDetails!.hospitalNumber)
+                    : ""
+                }`,
+              }}
+              onClick={hideModal}
+            >
+              <Button color="warning" variant="contained" size="large">
+                View Medication
+              </Button>
+            </Link>
             <Button
               color="error"
               variant="outlined"
