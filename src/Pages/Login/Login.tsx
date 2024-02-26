@@ -143,7 +143,7 @@ function Login() {
             />
 
             <Button
-              className="!bg-teal-600 w-[150px] hover:!bg-blue-500 mx-auto block text-center self-center"
+              className="!bg-lime-600 w-[150px] hover:!bg-green-500 mx-auto block text-center self-center"
               type="submit"
               variant="contained"
               size="large"

@@ -16,6 +16,7 @@ function Home() {
   const openToast = ToastStore((store) => store.openToast);
   const [stats, setStats] = useState<statsType | null>(null);
   const setUser = UserStore((store) => store.setUser);
+  const loggedInUser = UserStore((store) => store.user);
   const setTableData = TableStore((store) => store.setTableData);
   const navigate = useNavigate();
 
@@ -59,6 +60,11 @@ function Home() {
   }, []);
   return (
     <div className="bg-white overflow-auto w-full h-full min-h-screen">
+      {!loggedInUser && (
+        <div className="absolute bg-white w-screen h-screen top-0 z-[10000000000] left-0 text-center">
+          <CircularProgress className="!text-lime-600 !w-[150px] !h-[150px] !m-auto !block relative top-[25%]" />
+        </div>
+      )}
       <section className="mt-[100px] p-5 h-full">
         <div className="flex gap-5 mx-auto justify-evenly">
           <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[140px] w-[200px] px-3 py-3 bg-green-200">
