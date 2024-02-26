@@ -13,6 +13,7 @@ import {
 import { formatDate } from "../Utils/helpers";
 import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 function DataTable() {
   const data = TableStore((store) => store.data);
@@ -132,12 +133,22 @@ function DataTable() {
                   titleAccess="View Patient Info"
                 />
               </IconButton>
-              <IconButton onClick={() => console.log("edit")}>
-                <MedicalInformation
-                  className="text-blue-500"
-                  titleAccess="View Patient Medication"
-                />
-              </IconButton>
+
+              <Link
+                to={{
+                  pathname: `/medication`,
+                  search: `hospitalNumber=${encodeURIComponent(
+                    tableMeta.rowData[0]
+                  )}`,
+                }}
+              >
+                <IconButton>
+                  <MedicalInformation
+                    className="text-blue-500"
+                    titleAccess="View Patient Medication"
+                  />
+                </IconButton>
+              </Link>
               <IconButton onClick={() => console.log("edit")}>
                 <QueryStatsRounded
                   className="text-red-500"

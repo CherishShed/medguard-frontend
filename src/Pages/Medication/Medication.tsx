@@ -77,7 +77,7 @@ function Medication() {
       console.log(searchValue);
       axios
         .get(
-          `http://localhost:8081/api/healthworker/patient/medication?hospitalNumber=${searchValue}`,
+          `https://medguard.vercel.app/api/healthworker/patient/medication?hospitalNumber=${searchValue}`,
           {
             headers: { Authorization: localStorage.getItem("token") },
           }
