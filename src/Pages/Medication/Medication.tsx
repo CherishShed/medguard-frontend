@@ -154,11 +154,11 @@ function Medication() {
             <p className="font-bold bg-[#436850] text-white p-2 flex gap-2">
               <span>Last Modified By: </span>
               <span className="font-normal">
-                {!patient?.lastUpdatedBy[0] ? (
+                {!patient?.lastUpdatedBy ? (
                   <Skeleton width={"100px"} />
                 ) : (
-                  `${patient?.lastUpdatedBy[0].firstName}
-                ${patient?.lastUpdatedBy[0].lastName}`
+                  `${patient?.lastUpdatedBy.firstName}
+                ${patient?.lastUpdatedBy.lastName}`
                 )}
               </span>
             </p>

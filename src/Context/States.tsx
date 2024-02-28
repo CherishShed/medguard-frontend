@@ -25,7 +25,7 @@ export type patientType = {
   phone_number: 1;
   emergencyContact1: string;
   emergencyContact2: string;
-  lastUpdatedBy: { firstName: string; lastName: string }[];
+  lastUpdatedBy: { firstName: string; lastName: string };
 };
 type userStoreType = {
   user: userType | null;
