@@ -23,6 +23,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
+import MedicationModal from "../../Components/MedicationModal";
 
 function Medication() {
   const openToast = ToastStore((store) => store.openToast);
@@ -38,6 +39,13 @@ function Medication() {
   const [value, setValue] = useState("1");
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(getQueryParameters());
+  const [medModal, setMedModal] = useState(false);
+  function showMedModal() {
+    setMedModal(true);
+  }
+  function hideMedModal() {
+    setMedModal(false);
+  }
   function getQueryParameters() {
     const extractedSearchParams = new URLSearchParams(searchParams);
 
@@ -74,7 +82,6 @@ function Medication() {
   const getMedDetails = () => {
     setLoading(true);
     if (searchValue !== "") {
-      console.log(searchValue);
       axios
         .get(
           `https://medguard.vercel.app/api/healthworker/patient/medication?hospitalNumber=${searchValue}`,
@@ -89,10 +96,11 @@ function Medication() {
           setLoading(false);
         })
         .catch((error) => {
-          console.log(error);
           setLoading(false);
-          if (error.response.status != 401) {
+          if (error.response) {
             openToast(error.response.data.message, "error");
+          } else {
+            openToast(error.message, "error");
           }
         });
     }
@@ -219,12 +227,14 @@ function Medication() {
                 <TabPanel value="1">
                   <MedicationDataTable
                     data={activeMedData}
+                    showModal={showMedModal}
                     title={"Active Prescriptions"}
                   />
                 </TabPanel>
                 <TabPanel value="2">
                   <MedicationDataTable
                     data={endedMedData}
+                    showModal={showMedModal}
                     title={"Older Prescriptions"}
                   />
                 </TabPanel>
@@ -233,6 +243,12 @@ function Medication() {
           </div>
         )}
       </section>
+      <MedicationModal
+        open={medModal}
+        hideModal={hideMedModal}
+        currentPatient={patient?.hospitalNumber}
+        getMedDetails={getMedDetails}
+      />
     </div>
   );
 }

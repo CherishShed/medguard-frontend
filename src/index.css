@@ -40,7 +40,7 @@
 }
 
 .modal-box::-webkit-scrollbar-thumb {
-  background-color: #bfea7c;
+  background-color: green;
 }
 
 .modal-box::-webkit-scrollbar-button {
@@ -58,6 +58,21 @@
 }
 
 .tss-1adnaro-MUIDataTable-root::-webkit-scrollbar-button {
+  background-color: transparent;
+  border: none;
+}
+
+.MuiList-root::-webkit-scrollbar {
+  width: 5px !important;
+  height: 3px !important;
+  background-color: white !important;
+}
+
+.MuiList-root::-webkit-scrollbar-thumb {
+  background-color: green;
+}
+
+.MuiList-root::-webkit-scrollbar-button {
   background-color: transparent;
   border: none;
 }

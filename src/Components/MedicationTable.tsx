@@ -1,7 +1,7 @@
 import MUIDataTable, { MUIDataTableOptions } from "mui-datatables";
-import { Skeleton } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 
-import { formatNormalDate } from "../Utils/helpers";
+import { formatDate, formatNormalDate } from "../Utils/helpers";
 // import axios from "axios";
 // import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -10,12 +10,15 @@ export type medicationType = {
   type: string;
   start_date: string;
   end_date: string;
+  createdAt: string;
+  updatedAt: string;
 };
 type medProps = {
   data: medicationType[] | null;
   title: string;
+  showModal: () => void;
 };
-function MedicationDataTable({ data, title }: medProps) {
+function MedicationDataTable({ data, title, showModal }: medProps) {
   const columns = [
     {
       name: "name",
@@ -55,14 +58,34 @@ function MedicationDataTable({ data, title }: medProps) {
         },
       },
     },
+    {
+      name: "updatedAt",
+      label: "Last Updated",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value: unknown) => {
+          return formatDate(value as string);
+        },
+      },
+    },
   ];
-
   const options: MUIDataTableOptions = {
     filterType: "checkbox",
     onChangePage: (currentPage) => {
       console.log(currentPage);
     },
+    customToolbar: () => {
+      return title == "Active Prescriptions" ? (
+        <Button variant="outlined" color="success" onClick={showModal}>
+          Add Medication
+        </Button>
+      ) : (
+        <></>
+      );
+    },
   };
+
   return (
     <>
       {!data ? (
