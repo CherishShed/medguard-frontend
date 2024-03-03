@@ -4,6 +4,7 @@ import Home from "./Pages/Home/Home";
 import Error from "./Pages/Error/Error";
 import SideNav from "./Layout/SideNav";
 import Medication from "./Pages/Medication/Medication";
+import Vitals from "./Pages/Vitals/Vitals";
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
         <Route path="dashboard" element={<Home />} />
         <Route path="medication" element={<Medication />}>
           <Route path=":hospitalNumber" element={<Medication />} />
+        </Route>
+        <Route path="vitals" element={<Vitals />}>
+          <Route path=":hospitalNumber" element={<Vitals />} />
         </Route>
       </Route>
       <Route index path="signin" element={<Login />} />

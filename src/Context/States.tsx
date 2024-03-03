@@ -15,7 +15,7 @@ export type userType = {
 export type patientType = {
   firstName: string;
   lastName: string;
-  vitals: string;
+  vitals: Array;
   hospitalNumber: string;
   gender: string;
   bloodgroup: string;
