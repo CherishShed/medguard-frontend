@@ -224,7 +224,17 @@ export default function PatientModal() {
           </div>
           <hr className="border-1 border-[#BFEA7C]" />
           <div className="flex items-center justify-between">
-            <Link to="">
+            <Link
+              to={{
+                pathname: `vitals`,
+                search: `hospitalNumber=${
+                  modalDetails
+                    ? encodeURIComponent(modalDetails!.hospitalNumber)
+                    : ""
+                }`,
+              }}
+              onClick={hideModal}
+            >
               <Button color="primary" variant="contained" size="large">
                 View Vitals
               </Button>
@@ -244,6 +254,7 @@ export default function PatientModal() {
                 View Medication
               </Button>
             </Link>
+
             <Button
               color="error"
               variant="outlined"

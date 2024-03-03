@@ -149,12 +149,21 @@ function DataTable() {
                   />
                 </IconButton>
               </Link>
-              <IconButton onClick={() => console.log("edit")}>
-                <QueryStatsRounded
-                  className="text-red-500"
-                  titleAccess="View Patient Vitals"
-                />
-              </IconButton>
+              <Link
+                to={{
+                  pathname: `/vitals`,
+                  search: `hospitalNumber=${encodeURIComponent(
+                    tableMeta.rowData[0]
+                  )}`,
+                }}
+              >
+                <IconButton>
+                  <QueryStatsRounded
+                    className="text-red-500"
+                    titleAccess="View Patient Vitals"
+                  />
+                </IconButton>
+              </Link>
             </div>
           );
         },
