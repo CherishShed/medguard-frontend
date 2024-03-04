@@ -30,7 +30,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { LoadingButton, TabContext, TabList, TabPanel } from "@mui/lab";
 import { Search } from "@mui/icons-material";
 function Vitals() {
   const [patient, setPatient] = useState<patientType | null>(null);
@@ -40,9 +40,9 @@ function Vitals() {
   const openToast = ToastStore((store) => store.openToast);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-
   const setUser = UserStore((store) => store.setUser);
   const [searchValue, setSearchValue] = useState(getQueryParameters());
+  const [currentPatient, setCurrentPatient] = useState(searchValue);
   function getQueryParameters() {
     const extractedSearchParams = new URLSearchParams(searchParams);
 
@@ -73,11 +73,12 @@ function Vitals() {
     });
     return;
   }, []);
-  const getVitalsDetails = () => {
+  const getVitalsDetails = (hosNum: string) => {
+    setCurrentPatient(searchValue);
     setLoading(true);
     axios
       .get(
-        `https://medguard.vercel.app/api/healthworker/patient/vitals?hospitalNumber=${searchValue}`,
+        `https://medguard.vercel.app/api/healthworker/patient/vitals?hospitalNumber=${hosNum}`,
         {
           headers: { Authorization: localStorage.getItem("token") },
         }
@@ -98,7 +99,7 @@ function Vitals() {
   };
   useEffect(() => {
     if (getQueryParameters()) {
-      getVitalsDetails();
+      getVitalsDetails(searchValue);
     }
     return;
   }, []);
@@ -120,7 +121,7 @@ function Vitals() {
                 <IconButton
                   onClick={() => {
                     setPatient(null);
-                    getVitalsDetails();
+                    getVitalsDetails(searchValue);
                   }}
                   edge="end"
                 >
@@ -201,6 +202,15 @@ function Vitals() {
                     <Tab label="Blood Pressure" value="1" />
                     <Tab label="Heart Beat" value="2" />
                     <Tab label="Blood Oxygen" value="3" />
+                    <LoadingButton
+                      className="right-0"
+                      variant="contained"
+                      color="success"
+                      loading={loading}
+                      onClick={() => getVitalsDetails(currentPatient)}
+                    >
+                      Refresh Vitals
+                    </LoadingButton>
                   </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -225,6 +235,7 @@ function Vitals() {
                         type="monotone"
                         dataKey={(e) => e.blood_pressure.split("/")[0]}
                         stroke="Green"
+                        unit={"mmHg"}
                         name="Systolic Pressure"
                       />
                       <Line
@@ -232,6 +243,7 @@ function Vitals() {
                         dataKey={(e) => e.blood_pressure.split("/")[1]}
                         stroke="Blue"
                         name="Diastolic Pressure"
+                        unit={"mmHg"}
                       />
                     </LineChart>
                   ) : (
@@ -278,6 +290,7 @@ function Vitals() {
                         fillOpacity={1}
                         fill="url(#colorUv)"
                         name="Heartbeat"
+                        unit={"bpm"}
                       />
                     </AreaChart>
                   ) : (
@@ -297,7 +310,7 @@ function Vitals() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="blood_oxygen" fill="orange" />
+                      <Bar dataKey="blood_oxygen" fill="orange" unit={"%"} />
                     </BarChart>
                   ) : (
                     <Skeleton height={300} width={1000} className="mx-auto" />

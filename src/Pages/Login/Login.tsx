@@ -12,6 +12,7 @@ import {
   VisibilityOutlined,
 } from "@mui/icons-material";
 import { checkAuth } from "../../Utils/helpers";
+import { LoadingButton, loadingButtonClasses } from "@mui/lab";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +22,7 @@ function Login() {
   // const user = UserStore((store) => store.user);
   const navigate = useNavigate();
   const openToast = ToastStore((store) => store.openToast);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     checkAuth().then((response) => {
@@ -35,6 +37,7 @@ function Login() {
     return;
   }, []);
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    setLoading(true);
     event.preventDefault();
     axios
       .post("https://medguard.vercel.app/api/healthworker/login", formData)
@@ -44,11 +47,13 @@ function Login() {
           localStorage.setItem("token", `Bearer ${result.data.accessToken}`);
           setUser(result.data.user, true);
           openToast("Log in successful", "success");
+          setLoading(false);
           navigate("/dashboard");
         }
       })
       .catch((error) => {
         openToast(error.response.data.message, "error");
+        setLoading(false);
       });
   }
   window.addEventListener("load", () => {
@@ -141,15 +146,15 @@ function Login() {
                 ),
               }}
             />
-
-            <Button
+            <LoadingButton
               className="!bg-lime-600 w-[150px] hover:!bg-green-500 mx-auto block text-center self-center"
               type="submit"
               variant="contained"
               size="large"
+              loading={loading}
             >
-              Login
-            </Button>
+              <span>Login</span>
+            </LoadingButton>
           </form>
         </div>
       </div>
