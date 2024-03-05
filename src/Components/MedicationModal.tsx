@@ -33,17 +33,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-function formatToOriginalDate(date: Date | undefined) {
-  if (date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  } else {
-    return "";
-  }
-}
+import { formatToOriginalDate } from "@/Utils/helpers";
 function formatTime(dateString: string | number | undefined) {
   if (dateString) {
     const date = new Date(dateString);

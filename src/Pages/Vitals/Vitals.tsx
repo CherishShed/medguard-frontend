@@ -15,7 +15,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { checkAuth, formatDate } from "@/Utils/helpers";
+import { checkAuth, formatDate, formatToOriginalDate } from "@/Utils/helpers";
 
 import {
   LineChart,
@@ -32,6 +32,11 @@ import {
 } from "recharts";
 import { LoadingButton, TabContext, TabList, TabPanel } from "@mui/lab";
 import { Search } from "@mui/icons-material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
+
 function Vitals() {
   const [patient, setPatient] = useState<patientType | null>(null);
   const [loading, setLoading] = useState(false);
@@ -43,18 +48,7 @@ function Vitals() {
   const setUser = UserStore((store) => store.setUser);
   const [searchValue, setSearchValue] = useState(getQueryParameters());
   const [currentPatient, setCurrentPatient] = useState(searchValue);
-  function getQueryParameters() {
-    const extractedSearchParams = new URLSearchParams(searchParams);
-
-    const params: { hospitalNumber: string } = { hospitalNumber: "" };
-    for (const [key, value] of extractedSearchParams) {
-      if (key === "hospitalNumber") {
-        params.hospitalNumber = value;
-      }
-    }
-
-    return params.hospitalNumber;
-  }
+  const [range, setRange] = useState({ fromDate: "", toDate: "" });
   useEffect(() => {
     const params = createSearchParams({
       hospitalNumber: searchValue,
@@ -103,6 +97,20 @@ function Vitals() {
     }
     return;
   }, []);
+
+  function getQueryParameters() {
+    const extractedSearchParams = new URLSearchParams(searchParams);
+
+    const params: { hospitalNumber: string } = { hospitalNumber: "" };
+    for (const [key, value] of extractedSearchParams) {
+      if (key === "hospitalNumber") {
+        params.hospitalNumber = value;
+      }
+    }
+
+    return params.hospitalNumber;
+  }
+
   return (
     <div className="bg-white overflow-auto w-full h-full min-h-screen">
       <section className="mt-[100px] p-5 w-full h-full">
@@ -213,12 +221,12 @@ function Vitals() {
                     </LoadingButton>
                   </TabList>
                 </Box>
-                <TabPanel value="1">
+                <TabPanel value="1" className="overflow-x-scroll !w-full">
                   {patient ? (
                     <LineChart
                       width={1000}
                       height={250}
-                      className="!w-full !h-[300px]"
+                      className="!min-w-fit !h-[300px] mx-auto"
                       data={patient.vitals}
                       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                     >
@@ -250,12 +258,12 @@ function Vitals() {
                     <Skeleton height={300} width={1000} className="mx-auto" />
                   )}
                 </TabPanel>
-                <TabPanel value="2">
+                <TabPanel value="2" className="overflow-x-scroll !w-full">
                   {patient ? (
                     <AreaChart
                       width={1000}
                       height={250}
-                      className="!w-full !h-[300px]"
+                      className="!min-w-fit !h-[300px] mx-auto"
                       data={patient.vitals}
                       margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                     >
@@ -297,16 +305,19 @@ function Vitals() {
                     <Skeleton height={300} width={1000} className="mx-auto" />
                   )}
                 </TabPanel>
-                <TabPanel value="3">
+                <TabPanel value="3" className="overflow-x-scroll !w-full">
                   {patient ? (
                     <BarChart
                       width={730}
                       height={250}
                       data={patient.vitals}
-                      className="!w-full !h-[300px]"
+                      className="!min-w-fit !h-[300px] mx-auto"
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey={(e) => formatDate(e.createdAt)} />
+                      <XAxis
+                        dataKey={(e) => formatDate(e.createdAt)}
+                        fontSize={8}
+                      />
                       <YAxis />
                       <Tooltip />
                       <Legend />
@@ -318,6 +329,31 @@ function Vitals() {
                 </TabPanel>
               </TabContext>
             </Box>
+            <div className="flex gap-5">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  onChange={(value: Dayjs | null) => {
+                    setRange((prevRangeData) => ({
+                      ...prevRangeData,
+                      fromDate: formatToOriginalDate(value?.toDate()),
+                    }));
+                  }}
+                  label="Start Date"
+                />
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  minDate={dayjs(range.fromDate)}
+                  label="End Date"
+                  onChange={(value: Dayjs | null) => {
+                    setRange((prevRangeData) => ({
+                      ...prevRangeData,
+                      toDate: formatToOriginalDate(value?.toDate()),
+                    }));
+                  }}
+                />
+              </LocalizationProvider>
+            </div>
           </div>
         )}
       </section>

@@ -83,7 +83,7 @@ function DataTable() {
           return (
             <p className="font-medium">
               {" "}
-              {value.blood_pressure} - {value.heart_beat} BPM
+              {value.blood_pressure}mmHg - {value.heart_beat}bpm
               <span className="block text-xs">
                 {formatDate(value.updatedAt)}
               </span>
