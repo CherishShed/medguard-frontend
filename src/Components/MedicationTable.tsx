@@ -1,9 +1,12 @@
-import MUIDataTable, { MUIDataTableOptions } from "mui-datatables";
-import { Button, Skeleton } from "@mui/material";
+import MUIDataTable, {
+  MUIDataTableMeta,
+  MUIDataTableOptions,
+} from "mui-datatables";
+import { Button, IconButton, Skeleton } from "@mui/material";
 
 import { formatDate, formatNormalDate } from "../Utils/helpers";
+import { Add, RemoveRedEye } from "@mui/icons-material";
 // import axios from "axios";
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export type medicationType = {
   name: string;
@@ -16,40 +19,38 @@ export type medicationType = {
 type medProps = {
   data: medicationType[] | null;
   title: string;
-  showModal: () => void;
+  showPrescriptionModal: () => void;
+  showMedModal: (id: string) => void;
 };
-function MedicationDataTable({ data, title, showModal }: medProps) {
+function MedicationDataTable({
+  data,
+  title,
+  showMedModal,
+  showPrescriptionModal,
+}: medProps) {
   const columns = [
     {
-      name: "name",
-      label: "Name",
+      name: "_id",
+      label: "Prescription ID",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      name: "type",
-      label: "Type",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "start_date",
-      label: "Start Date",
+      name: "drugs",
+      label: "Number of Drugs",
       options: {
         filter: false,
         sort: true,
         customBodyRender: (value: unknown) => {
-          return formatNormalDate(value as string);
+          return (value as Array<object>).length;
         },
       },
     },
     {
-      name: "end_date",
-      label: "End Date",
+      name: "prescriptionDate",
+      label: "Date Prescribed",
       options: {
         filter: false,
         sort: true,
@@ -62,10 +63,49 @@ function MedicationDataTable({ data, title, showModal }: medProps) {
       name: "updatedAt",
       label: "Last Updated",
       options: {
-        filter: false,
+        filter: true,
         sort: true,
         customBodyRender: (value: unknown) => {
           return formatDate(value as string);
+        },
+      },
+    },
+    {
+      name: "actions",
+      label: "Actions",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: function Actions(
+          value: unknown,
+          tableMeta: MUIDataTableMeta
+        ) {
+          console.log(value);
+          return (
+            <div className="flex gap-3 items-center">
+              <IconButton
+                onClick={() => {
+                  showPrescriptionModal();
+                }}
+              >
+                <RemoveRedEye
+                  className="text-green-500"
+                  titleAccess="View Prescription Info"
+                />
+              </IconButton>
+              {title == "Active Prescriptions" ? (
+                <IconButton
+                  onClick={() => {
+                    showMedModal(tableMeta.rowData[0]);
+                  }}
+                >
+                  <Add className="text-red-500" titleAccess="Add Medication" />
+                </IconButton>
+              ) : (
+                ""
+              )}
+            </div>
+          );
         },
       },
     },
@@ -77,8 +117,12 @@ function MedicationDataTable({ data, title, showModal }: medProps) {
     },
     customToolbar: () => {
       return title == "Active Prescriptions" ? (
-        <Button variant="outlined" color="success" onClick={showModal}>
-          Add Medication
+        <Button
+          variant="outlined"
+          color="success"
+          onClick={showPrescriptionModal}
+        >
+          Add Prescription
         </Button>
       ) : (
         <></>

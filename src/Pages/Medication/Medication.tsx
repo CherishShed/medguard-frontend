@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import MedicationModal from "../../Components/MedicationModal";
+import PrescriptionModal from "@/Components/PrescriptionModal";
 
 function Medication() {
   const openToast = ToastStore((store) => store.openToast);
@@ -39,12 +40,23 @@ function Medication() {
   const [value, setValue] = useState("1");
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(getQueryParameters());
-  const [medModal, setMedModal] = useState(false);
-  function showMedModal() {
-    setMedModal(true);
+  const [medModal, setMedModal] = useState({
+    prescriptionId: "",
+    open: false,
+  });
+  const [prescriptionModal, setPrescriptionModal] = useState(false);
+
+  function showMedModal(id: string) {
+    setMedModal({ prescriptionId: id, open: true });
   }
   function hideMedModal() {
-    setMedModal(false);
+    setMedModal({ prescriptionId: "", open: false });
+  }
+  function showPrescriptionModal() {
+    setPrescriptionModal(true);
+  }
+  function hidePrescriptionModal() {
+    setPrescriptionModal(false);
   }
   function getQueryParameters() {
     const extractedSearchParams = new URLSearchParams(searchParams);
@@ -67,6 +79,7 @@ function Medication() {
     } as URLSearchParamsInit);
     setSearchParams(params);
   }, [searchValue]);
+
   useEffect(() => {
     checkAuth().then((response) => {
       if (!response.auth) {
@@ -79,12 +92,13 @@ function Medication() {
     });
     return;
   }, []);
+
   const getMedDetails = () => {
     setLoading(true);
     if (searchValue !== "") {
       axios
         .get(
-          `https://medguard.vercel.app/api/healthworker/patient/medication?hospitalNumber=${searchValue}`,
+          `https://medguard.vercel.app/api/healthworker/patient/prescription?hospitalNumber=${searchValue}`,
           {
             headers: { Authorization: localStorage.getItem("token") },
           }
@@ -227,14 +241,16 @@ function Medication() {
                 <TabPanel value="1">
                   <MedicationDataTable
                     data={activeMedData}
-                    showModal={showMedModal}
+                    showPrescriptionModal={showPrescriptionModal}
+                    showMedModal={showMedModal}
                     title={"Active Prescriptions"}
                   />
                 </TabPanel>
                 <TabPanel value="2">
                   <MedicationDataTable
                     data={endedMedData}
-                    showModal={showMedModal}
+                    showPrescriptionModal={showPrescriptionModal}
+                    showMedModal={showMedModal}
                     title={"Older Prescriptions"}
                   />
                 </TabPanel>
@@ -244,8 +260,15 @@ function Medication() {
         )}
       </section>
       <MedicationModal
-        open={medModal}
+        open={medModal.open}
         hideModal={hideMedModal}
+        currentPatient={patient?.hospitalNumber}
+        getMedDetails={getMedDetails}
+        prescriptionId={medModal.prescriptionId}
+      />
+      <PrescriptionModal
+        open={prescriptionModal}
+        hideModal={hidePrescriptionModal}
         currentPatient={patient?.hospitalNumber}
         getMedDetails={getMedDetails}
       />

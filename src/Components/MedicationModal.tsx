@@ -51,12 +51,13 @@ type modalProps = {
   hideModal: () => void;
   getMedDetails: () => void;
   currentPatient: string | undefined;
+  prescriptionId: string;
 };
 export default function MedicationModal({
   open,
   hideModal,
-  currentPatient,
   getMedDetails,
+  prescriptionId,
 }: modalProps) {
   //   const modalDetails = ModalStore((store) => store.modalDetails);
   const openToast = ToastStore((store) => store.openToast);
@@ -73,8 +74,8 @@ export default function MedicationModal({
 
   function submitMedication() {
     axios
-      .post(
-        `https://medguard.vercel.app/api/healthworker/patient/medication?hospitalNumber=${currentPatient}`,
+      .patch(
+        `https://medguard.vercel.app/api/healthworker/patient/medication?prescriptionId=${prescriptionId}`,
         medData,
         {
           headers: { Authorization: localStorage.getItem("token") },
