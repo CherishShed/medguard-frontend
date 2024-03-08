@@ -67,7 +67,7 @@ function Home() {
       )}
       <section className="mt-[100px] p-5 h-full">
         <div className="flex gap-5 mx-auto justify-evenly">
-          <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[140px] w-[200px] px-3 py-3 bg-green-200">
+          <div className="flex flex-col justify-between rounded-xl border-2 border-green-500 h-[150px] w-[200px] px-3 py-3 bg-green-200">
             <div className="flex items-center justify-evenly">
               {stats ? (
                 <p className="text-7xl max-w-[70%] text-black">
@@ -83,7 +83,7 @@ function Home() {
               Total Patients
             </p>
           </div>
-          <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[140px] w-[200px] px-3 py-3 bg-sky-200">
+          <div className="flex flex-col justify-between rounded-xl border-2 border-sky-500 h-[150px] w-[200px] px-3 py-3 bg-sky-200">
             <div className="flex items-center justify-evenly">
               {stats ? (
                 <p className="text-7xl max-w-[70%] text-black">
@@ -98,7 +98,7 @@ function Home() {
               Active Medications
             </p>
           </div>
-          <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[140px] w-[200px] px-3 py-3 bg-orange-200">
+          <div className="flex flex-col justify-between rounded-xl border-2 border-yellow-500 h-[150px] w-[200px] px-3 py-3 bg-orange-200">
             <div className="flex items-center justify-evenly">
               {stats ? (
                 <p className="text-7xl max-w-[70%] text-black">
@@ -113,7 +113,7 @@ function Home() {
               Abormal Readings
             </p>
           </div>
-          <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[140px] w-[200px] px-3 py-3 bg-red-200">
+          <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[150px] w-[200px] px-3 py-3 bg-red-200">
             <div className="flex items-center justify-evenly">
               {stats ? (
                 <p className="text-7xl max-w-[70%] text-black">

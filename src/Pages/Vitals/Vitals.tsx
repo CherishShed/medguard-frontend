@@ -1,6 +1,7 @@
 import { ToastStore, UserStore, patientType } from "@/Context/States";
 import {
   Box,
+  Chip,
   IconButton,
   InputAdornment,
   OutlinedInput,
@@ -191,6 +192,16 @@ function Vitals() {
                   </span>
                 </p>
               </div>
+              <Chip
+                label={patient?.status.toLocaleUpperCase()}
+                className={`!h-12 ${
+                  patient?.status === "good"
+                    ? "!bg-[rgb(94,218,94,0.5)]"
+                    : patient?.status === "abnormal"
+                    ? "!bg-[rgb(227,189,51,0.5)]"
+                    : "!bg-[rgb(218,94,94,0.5)]"
+                } font-bold !rounded-3xl min-w-fit !w-[300px]`}
+              />
             </div>
             <Box sx={{ width: "100%", typography: "body1" }}>
               <TabContext value={value}>
@@ -221,14 +232,14 @@ function Vitals() {
                     </LoadingButton>
                   </TabList>
                 </Box>
-                <TabPanel value="1" className="overflow-x-scroll !w-full">
+                <TabPanel value="1" className="!w-full">
                   {patient ? (
                     <LineChart
                       width={1000}
                       height={250}
                       className="!min-w-fit !h-[300px] mx-auto"
                       data={patient.vitals}
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      margin={{ top: 5, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis
@@ -329,7 +340,10 @@ function Vitals() {
                 </TabPanel>
               </TabContext>
             </Box>
-            <div className="flex gap-5">
+            <p className="font-bold block text-center text-xl border border-t-green-500 py-2">
+              Choose a period range
+            </p>
+            <div className="flex gap-5 justify-center p-3">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   onChange={(value: Dayjs | null) => {
