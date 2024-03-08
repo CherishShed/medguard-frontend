@@ -150,7 +150,7 @@ export default function PrescriptionModal({
   function submitMedication() {
     axios
       .post(
-        `http://localhost:8081/api/healthworker/patient/prescription`,
+        `https://medguard.vercel.app/api/healthworker/patient/prescription`,
         prescriptionData,
         {
           headers: { Authorization: localStorage.getItem("token") },
