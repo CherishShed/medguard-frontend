@@ -28,6 +28,7 @@ function formatTime(dateString: string | number | undefined) {
 function MedicationDetails({
   index,
   changeDrug,
+  medData,
 }: {
   index: number;
   changeDrug: (
@@ -35,7 +36,7 @@ function MedicationDetails({
     field:
       | "morning"
       | "afternoon"
-      | "evening"
+      | "night"
       | "instructions"
       | "end_date"
       | "start_date"
@@ -52,7 +53,7 @@ function MedicationDetails({
     instructions: string;
     morning: { amount: number; time: string };
     afternoon: { amount: number; time: string };
-    evening: { amount: number; time: string };
+    night: { amount: number; time: string };
   }[];
 }) {
   return (
@@ -123,6 +124,7 @@ function MedicationDetails({
         onChange={(e) => {
           changeDrug(index, "instructions", e.target.value);
         }}
+        value={medData[index].instructions}
       />
       <section>
         <hr className="bg-lime-500 h-[3px] mb-2" />
@@ -147,7 +149,6 @@ function MedicationDetails({
                   changeDrug(index, "morning", e.target.value, "amount");
                 }}
               />
-
               <TimePicker
                 label="Time To take"
                 onChange={(value: { $d: string } | null) => {
@@ -180,7 +181,7 @@ function MedicationDetails({
             </div>
           </div>
           <div>
-            <p className="font-bold mb-1">Evening</p>
+            <p className="font-bold mb-1">night</p>
             <div className="flex gap-3">
               <TextField
                 label="Amount"
@@ -190,14 +191,14 @@ function MedicationDetails({
                 variant="outlined"
                 color="success"
                 onChange={(e) => {
-                  changeDrug(index, "evening", e.target.value, "amount");
+                  changeDrug(index, "night", e.target.value, "amount");
                 }}
               />
 
               <TimePicker
                 label="Time To take"
                 onChange={(value: { $d: string } | null) => {
-                  changeDrug(index, "evening", formatTime(value?.$d), "time");
+                  changeDrug(index, "night", formatTime(value?.$d), "time");
                 }}
               />
             </div>

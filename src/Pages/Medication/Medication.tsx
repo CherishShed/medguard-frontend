@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { ToastStore, UserStore, patientType } from "../../Context/States";
+import {
+  PrescriptionModalStore,
+  ToastStore,
+  UserStore,
+  patientType,
+} from "../../Context/States";
 import {
   URLSearchParamsInit,
   createSearchParams,
@@ -25,6 +30,7 @@ import {
 import { Search } from "@mui/icons-material";
 import MedicationModal from "../../Components/MedicationModal";
 import PrescriptionModal from "@/Components/PrescriptionModal";
+import PrescriptionDetailsModal from "@/Components/PrescriptionDetailsModal";
 
 function Medication() {
   const openToast = ToastStore((store) => store.openToast);
@@ -52,12 +58,7 @@ function Medication() {
   function hideMedModal() {
     setMedModal({ prescriptionId: "", open: false });
   }
-  function showPrescriptionModal() {
-    setPrescriptionModal(true);
-  }
-  function hidePrescriptionModal() {
-    setPrescriptionModal(false);
-  }
+
   function getQueryParameters() {
     const extractedSearchParams = new URLSearchParams(searchParams);
 
@@ -70,7 +71,38 @@ function Medication() {
 
     return params.hospitalNumber;
   }
-
+  const openPrescriptionModal = PrescriptionModalStore(
+    (store) => store.showModal
+  );
+  const setPrescriptionDetails = PrescriptionModalStore(
+    (store) => store.setModalDetails
+  );
+  const showPrescriptionModal = () => {
+    setPrescriptionModal(true);
+  };
+  const hidePrescriptionModal = () => {
+    setPrescriptionModal(false);
+  };
+  const showPrescriptionDetailsModal = (prescriptionId: string) => {
+    openPrescriptionModal();
+    axios
+      .get(
+        `https://medguard.vercel.app/api/healthworker/patient/singleprescription?prescriptionId=${prescriptionId}`,
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      )
+      .then((response) => {
+        setPrescriptionDetails(response.data.prescription);
+      })
+      .catch((error) => {
+        if (error.response) {
+          openToast(error.response.data.message, "error");
+        } else {
+          openToast(error.message, "error");
+        }
+      });
+  };
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -242,6 +274,7 @@ function Medication() {
                   <MedicationDataTable
                     data={activeMedData}
                     showPrescriptionModal={showPrescriptionModal}
+                    showPrescriptionDetailsModal={showPrescriptionDetailsModal}
                     showMedModal={showMedModal}
                     title={"Active Prescriptions"}
                   />
@@ -250,6 +283,7 @@ function Medication() {
                   <MedicationDataTable
                     data={endedMedData}
                     showPrescriptionModal={showPrescriptionModal}
+                    showPrescriptionDetailsModal={showPrescriptionDetailsModal}
                     showMedModal={showMedModal}
                     title={"Older Prescriptions"}
                   />
@@ -266,11 +300,12 @@ function Medication() {
         getMedDetails={getMedDetails}
         prescriptionId={medModal.prescriptionId}
       />
+      <PrescriptionDetailsModal currentPatient={patient?.hospitalNumber} />
       <PrescriptionModal
-        open={prescriptionModal}
-        hideModal={hidePrescriptionModal}
         currentPatient={patient?.hospitalNumber}
         getMedDetails={getMedDetails}
+        hideModal={hidePrescriptionModal}
+        open={prescriptionModal}
       />
     </div>
   );

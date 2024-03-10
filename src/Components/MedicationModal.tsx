@@ -218,6 +218,7 @@ export default function MedicationModal({
                     <TimePicker
                       label="Time To take"
                       onChange={(value: { $d: string } | null) => {
+                        console.log(value);
                         setMedData((prevMedData) => ({
                           ...prevMedData,
                           morning: {

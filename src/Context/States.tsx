@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { produce } from "immer";
 import { AlertColor } from "@mui/material";
 import { toast } from "react-toastify";
+import { PrescriptionType } from "@/Components/PrescriptionModal";
 export type userType = {
   employeeNumber: string;
   firstName: string;
@@ -32,6 +33,7 @@ export type patientType = {
   emergencyContact2: string;
   lastUpdatedBy: { firstName: string; lastName: string };
 };
+
 type userStoreType = {
   user: userType | null;
   isAuthenticated: boolean;
@@ -134,6 +136,41 @@ type detailsModal = {
 };
 
 export const ModalStore = create<detailsModal>()((set) => ({
+  open: false,
+  modalDetails: null,
+  setModalDetails: (details) => {
+    set(
+      produce((store) => {
+        store.modalDetails = details;
+      })
+    );
+  },
+  showModal: () => {
+    set(
+      produce((store) => {
+        store.open = true;
+      })
+    );
+  },
+  hideModal: () => {
+    set(
+      produce((store) => {
+        store.open = false;
+        store.modalDetails = null;
+      })
+    );
+  },
+}));
+
+type PrescriptionModal = {
+  open: boolean;
+  showModal: () => void;
+  hideModal: () => void;
+  modalDetails: PrescriptionType | null;
+  setModalDetails: (details: PrescriptionType | null) => void;
+};
+
+export const PrescriptionModalStore = create<PrescriptionModal>()((set) => ({
   open: false,
   modalDetails: null,
   setModalDetails: (details) => {

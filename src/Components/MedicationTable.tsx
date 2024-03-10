@@ -19,6 +19,7 @@ export type medicationType = {
 type medProps = {
   data: medicationType[] | null;
   title: string;
+  showPrescriptionDetailsModal: (prescriptionId: string) => void;
   showPrescriptionModal: () => void;
   showMedModal: (id: string) => void;
 };
@@ -27,6 +28,7 @@ function MedicationDataTable({
   title,
   showMedModal,
   showPrescriptionModal,
+  showPrescriptionDetailsModal,
 }: medProps) {
   const columns = [
     {
@@ -85,7 +87,7 @@ function MedicationDataTable({
             <div className="flex gap-3 items-center">
               <IconButton
                 onClick={() => {
-                  showPrescriptionModal();
+                  showPrescriptionDetailsModal(tableMeta.rowData[0]);
                 }}
               >
                 <RemoveRedEye

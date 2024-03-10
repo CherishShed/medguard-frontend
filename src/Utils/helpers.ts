@@ -29,17 +29,20 @@ export const formatDate = (dateString: string): string => {
   return formattedDate.replace(",", " |");
 };
 
-export const formatNormalDate = (dateString: string): string => {
-  const date = new Date(dateString);
+export const formatNormalDate = (dateString: string | undefined): string => {
+  if (dateString) {
+    const date = new Date(dateString);
 
-  const options: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  };
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    };
 
-  const formattedDate: string = date.toLocaleString("en-US", options);
-  return formattedDate;
+    const formattedDate: string = date.toLocaleString("en-US", options);
+    return formattedDate;
+  }
+  return "";
 };
 
 export function formatToOriginalDate(date: Date | undefined) {
@@ -51,4 +54,23 @@ export function formatToOriginalDate(date: Date | undefined) {
   } else {
     return "";
   }
+}
+
+export function convertTo24HourFormat(time: string) {
+  if (time !== "") {
+    const [timePart, suffix] = time.split(" ");
+    const [hours, minutes] = timePart.split(":").map(Number);
+    const adjustedHours =
+      (hours % 12) + (suffix.toUpperCase() === "PM" ? 12 : 0);
+    return `${adjustedHours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}`;
+  }
+  return "";
+}
+
+export function toTitleCase(str: string) {
+  return str.toLowerCase().replace(/(?:^|\s)\w/g, function (match) {
+    return match.toUpperCase();
+  });
 }

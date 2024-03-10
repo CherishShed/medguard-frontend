@@ -12,9 +12,10 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: "60%",
+  maxWidth: 800,
   height: "fit-content",
-  maxHeight: 430,
+  maxHeight: 500,
   bgcolor: "background.paper",
   border: "2px solid green",
   boxShadow: 24,
@@ -223,7 +224,7 @@ export default function PatientModal() {
             </div>
           </div>
           <hr className="border-1 border-[#BFEA7C]" />
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 justify-between">
             <Link
               to={{
                 pathname: `vitals`,
@@ -234,8 +235,14 @@ export default function PatientModal() {
                 }`,
               }}
               onClick={hideModal}
+              className="w-full"
             >
-              <Button color="primary" variant="contained" size="large">
+              <Button
+                color="primary"
+                variant="contained"
+                size="large"
+                fullWidth
+              >
                 View Vitals
               </Button>
             </Link>
@@ -249,13 +256,20 @@ export default function PatientModal() {
                 }`,
               }}
               onClick={hideModal}
+              className="w-full"
             >
-              <Button color="warning" variant="contained" size="large">
+              <Button
+                color="warning"
+                variant="contained"
+                size="large"
+                fullWidth
+              >
                 View Medication
               </Button>
             </Link>
 
             <Button
+              fullWidth
               color="error"
               variant="outlined"
               size="large"

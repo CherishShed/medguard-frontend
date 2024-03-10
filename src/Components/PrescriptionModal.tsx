@@ -34,7 +34,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-import { formatToOriginalDate } from "@/Utils/helpers";
+import { formatNormalDate, formatToOriginalDate } from "@/Utils/helpers";
 
 type modalProps = {
   open: boolean;
@@ -42,7 +42,7 @@ type modalProps = {
   getMedDetails: () => void;
   currentPatient: string | undefined;
 };
-type medDataType = {
+export type PrescriptionType = {
   prescriptionDate: string;
   drugs: {
     name: string;
@@ -52,7 +52,7 @@ type medDataType = {
     instructions: string;
     morning: { amount: number; time: string };
     afternoon: { amount: number; time: string };
-    evening: { amount: number; time: string };
+    night: { amount: number; time: string };
   }[];
   hospitalNumber: string | undefined;
 };
@@ -71,7 +71,7 @@ export default function PrescriptionModal({
     field:
       | "morning"
       | "afternoon"
-      | "evening"
+      | "night"
       | "instructions"
       | "end_date"
       | "start_date"
@@ -85,7 +85,7 @@ export default function PrescriptionModal({
       drugs: prevState.drugs.map((drug, i) => {
         if (i === index) {
           // Check if the field is nested
-          if (subField && field === ("morning" || "afternoon" || "evening")) {
+          if (subField && field === ("morning" || "afternoon" || "night")) {
             // Update the nested field
             return {
               ...drug,
@@ -107,19 +107,37 @@ export default function PrescriptionModal({
     }));
   };
 
-  const [prescriptionData, setPrescriptionData] = useState<medDataType>({
-    prescriptionDate: "",
+  const [prescriptionData, setPrescriptionData] = useState<PrescriptionType>({
+    prescriptionDate: formatNormalDate(
+      new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      })
+    ),
     hospitalNumber: currentPatient,
     drugs: [
       {
         name: "",
-        start_date: "",
-        end_date: "",
+        start_date: formatNormalDate(
+          new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          })
+        ),
+        end_date: formatNormalDate(
+          new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          })
+        ),
         type: "",
         instructions: "",
         morning: { amount: 0, time: "" },
         afternoon: { amount: 0, time: "" },
-        evening: { amount: 0, time: "" },
+        night: { amount: 0, time: "" },
       },
     ],
   });
@@ -142,7 +160,10 @@ export default function PrescriptionModal({
         key={newKey}
         index={newKey}
         changeDrug={handleChangeDrug}
-        medData={prescriptionData.drugs}
+        medData={prescriptionData.drugs.map((drug) => ({
+          ...drug,
+          night: { amount: 0, time: "" },
+        }))}
       />,
     ]);
   };
@@ -202,6 +223,7 @@ export default function PrescriptionModal({
                 }));
               }}
               label="Date Prescribed"
+              readOnly
             />
           </LocalizationProvider>
           <h2 className="font-bold text-xl">Drugs</h2>
@@ -228,7 +250,7 @@ export default function PrescriptionModal({
                       instructions: "",
                       morning: { amount: 0, time: "" },
                       afternoon: { amount: 0, time: "" },
-                      evening: { amount: 0, time: "" },
+                      night: { amount: 0, time: "" },
                     },
                   ],
                 });
@@ -246,6 +268,14 @@ export default function PrescriptionModal({
               }}
             >
               Done
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              size="large"
+              onClick={hideModal}
+            >
+              Close
             </Button>
           </div>
         </Box>
