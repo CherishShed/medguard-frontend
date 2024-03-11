@@ -8,7 +8,12 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
-import { TableStore, ToastStore, UserStore } from "../Context/States";
+import {
+  ProfileModalStore,
+  TableStore,
+  ToastStore,
+  UserStore,
+} from "../Context/States";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +23,7 @@ export default function AvatarMenu() {
   const loggedInUser = UserStore((store) => store.user);
   const setUser = UserStore((store) => store.setUser);
   const setTableData = TableStore((store) => store.setTableData);
-
+  const openProfile = ProfileModalStore((store) => store.showModal);
   const openToast = ToastStore((store) => store.openToast);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -103,7 +108,12 @@ export default function AvatarMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            openProfile();
+            handleClose();
+          }}
+        >
           <Avatar /> Profile
         </MenuItem>
         <Divider />

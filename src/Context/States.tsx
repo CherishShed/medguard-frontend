@@ -11,6 +11,7 @@ export type userType = {
   dateOfBirth: string;
   phoneNumber: string;
   changedPassword: string;
+  post: string;
 };
 
 export type patientType = {
@@ -192,6 +193,31 @@ export const PrescriptionModalStore = create<PrescriptionModal>()((set) => ({
       produce((store) => {
         store.open = false;
         store.modalDetails = null;
+      })
+    );
+  },
+}));
+
+type ProfileModal = {
+  open: boolean;
+  showModal: () => void;
+  hideModal: () => void;
+};
+
+export const ProfileModalStore = create<ProfileModal>()((set) => ({
+  open: false,
+
+  showModal: () => {
+    set(
+      produce((store) => {
+        store.open = true;
+      })
+    );
+  },
+  hideModal: () => {
+    set(
+      produce((store) => {
+        store.open = false;
       })
     );
   },
