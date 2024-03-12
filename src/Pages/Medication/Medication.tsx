@@ -139,6 +139,7 @@ function Medication() {
     }
     return;
   }, []);
+  console.log(patient);
   return (
     <div className="bg-white overflow-auto w-full h-full min-h-screen">
       <section className="mt-[100px] p-5 w-full h-full">

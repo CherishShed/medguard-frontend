@@ -23,7 +23,7 @@ export type drugDetailsType = {
 };
 function PrescriptionDrugDetails({ index, medData }: drugDetailsType) {
   return (
-    <div className=" my-4 flex flex-col gap-4 h-full relative overflow-y-auto p-2 border border-slate-500 rounded-lg">
+    <div className=" my-4 flex flex-col gap-4 h-full relative p-2 border border-slate-500 rounded-lg">
       <h2 className="font-medium">Drug {index + 1}</h2>
       {!medData && (
         <>
@@ -51,6 +51,7 @@ function PrescriptionDrugDetails({ index, medData }: drugDetailsType) {
               value={medData.start_date}
               label="Start Date"
               inputProps={{ readOnly: true }}
+              color="success"
             />
             <TextField
               className="w-full"
@@ -58,6 +59,7 @@ function PrescriptionDrugDetails({ index, medData }: drugDetailsType) {
               value={medData.end_date}
               label="End Date"
               inputProps={{ readOnly: true }}
+              color="success"
             />
           </div>
 
@@ -130,6 +132,7 @@ function PrescriptionDrugDetails({ index, medData }: drugDetailsType) {
                   value={convertTo24HourFormat(medData.morning.time)}
                   label="Time To take"
                   inputProps={{ readOnly: true }}
+                  color="success"
                 />
               </div>
             </div>
@@ -155,6 +158,7 @@ function PrescriptionDrugDetails({ index, medData }: drugDetailsType) {
                   value={convertTo24HourFormat(medData.afternoon.time)}
                   label="Time To take"
                   inputProps={{ readOnly: true }}
+                  color="success"
                 />
               </div>
             </div>
@@ -180,6 +184,7 @@ function PrescriptionDrugDetails({ index, medData }: drugDetailsType) {
                   value={convertTo24HourFormat(medData.night.time)}
                   label="Time To take"
                   inputProps={{ readOnly: true }}
+                  color="success"
                 />
               </div>
             </div>

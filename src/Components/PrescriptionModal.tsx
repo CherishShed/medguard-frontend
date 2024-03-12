@@ -55,7 +55,9 @@ export type PrescriptionType = {
     night: { amount: number; time: string };
   }[];
   hospitalNumber: string | undefined;
+  lastUpdatedBy: { firstName: string; lastName: string } | null;
 };
+
 export default function PrescriptionModal({
   open,
   hideModal,
@@ -140,6 +142,7 @@ export default function PrescriptionModal({
         night: { amount: 0, time: "" },
       },
     ],
+    lastUpdatedBy: null,
   });
 
   const [medicationDetailsList, setMedicationDetailsList] = useState([
