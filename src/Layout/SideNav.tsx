@@ -19,7 +19,6 @@ import AvatarMenu from "../Components/AvatarMenu";
 import { Dashboard, MedicationLiquid, QueryStats } from "@mui/icons-material";
 import { Link, Outlet } from "react-router-dom";
 import PatientModal from "../Components/PatientModal";
-import ProfileModal from "@/Components/ProfileMenu";
 
 const drawerWidth = 240;
 
@@ -111,6 +110,7 @@ export default function SideNav() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+
       <AppBar position="fixed" open={open}>
         <Toolbar className="flex justify-between bg-[#416D19]">
           <div className="flex gap-6">
@@ -237,7 +237,6 @@ export default function SideNav() {
         </List>
       </Drawer>
       <PatientModal />
-      <ProfileModal />
       <Outlet />
     </Box>
   );

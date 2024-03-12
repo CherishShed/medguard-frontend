@@ -70,7 +70,10 @@ export function convertTo24HourFormat(time: string) {
 }
 
 export function toTitleCase(str: string) {
-  return str.toLowerCase().replace(/(?:^|\s)\w/g, function (match) {
-    return match.toUpperCase();
-  });
+  if (str) {
+    return str.toLowerCase().replace(/(?:^|\s)\w/g, function (match) {
+      return match.toUpperCase();
+    });
+  }
+  return "";
 }
