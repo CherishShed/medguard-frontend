@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { TableStore, ToastStore, UserStore } from "../../Context/States";
+import { TableStore, ToastStore } from "../../Context/States";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { Medication, PersonAdd, ShowChart } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import { checkAuth } from "../../Utils/helpers";
 import DataTable from "../../Components/DataTable";
 
 type statsType = {
@@ -15,22 +13,8 @@ type statsType = {
 function Home() {
   const openToast = ToastStore((store) => store.openToast);
   const [stats, setStats] = useState<statsType | null>(null);
-  const setUser = UserStore((store) => store.setUser);
   const setTableData = TableStore((store) => store.setTableData);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    checkAuth().then((response) => {
-      if (!response.auth) {
-        setUser(null, false);
-        openToast("Please Log in", "error");
-        return navigate("/signin");
-      } else {
-        setUser(response.user, true);
-      }
-    });
-    return;
-  }, []);
   useEffect(() => {
     axios
       .get("https://medguard.vercel.app/api/healthworker/dashboardstatistics", {

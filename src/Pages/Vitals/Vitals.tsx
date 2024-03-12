@@ -1,4 +1,4 @@
-import { ToastStore, UserStore, patientType } from "@/Context/States";
+import { ToastStore, patientType } from "@/Context/States";
 import {
   Box,
   Chip,
@@ -13,10 +13,9 @@ import { useEffect, useState } from "react";
 import {
   URLSearchParamsInit,
   createSearchParams,
-  useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { checkAuth, formatDate, formatToOriginalDate } from "@/Utils/helpers";
+import { formatDate, formatToOriginalDate } from "@/Utils/helpers";
 
 import {
   LineChart,
@@ -45,8 +44,6 @@ function Vitals() {
   const [value, setValue] = useState("1");
   const openToast = ToastStore((store) => store.openToast);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const setUser = UserStore((store) => store.setUser);
   const [searchValue, setSearchValue] = useState(getQueryParameters());
   const [currentPatient, setCurrentPatient] = useState(searchValue);
   const [range, setRange] = useState({ fromDate: "", toDate: "" });
@@ -56,18 +53,6 @@ function Vitals() {
     } as URLSearchParamsInit);
     setSearchParams(params);
   }, [searchValue]);
-  useEffect(() => {
-    checkAuth().then((response) => {
-      if (!response.auth) {
-        setUser(null, false);
-        openToast("Please Log in", "error");
-        return navigate("/signin");
-      } else {
-        setUser(response.user, true);
-      }
-    });
-    return;
-  }, []);
   const getVitalsDetails = (hosNum: string) => {
     setCurrentPatient(searchValue);
     setLoading(true);

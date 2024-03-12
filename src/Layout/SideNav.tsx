@@ -14,11 +14,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AvatarMenu from "../Components/AvatarMenu";
 import { Dashboard, MedicationLiquid, QueryStats } from "@mui/icons-material";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import PatientModal from "../Components/PatientModal";
+import { UserStore } from "@/Context/States";
+import { checkAuth } from "@/Utils/helpers";
 
 const drawerWidth = 240;
 
@@ -99,6 +101,8 @@ export default function SideNav() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
+  const setUser = UserStore((store) => store.setUser);
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -106,6 +110,18 @@ export default function SideNav() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    checkAuth().then((response) => {
+      if (!response.auth) {
+        setUser(null, false);
+        return navigate("/signin");
+      } else {
+        setUser(response.user, true);
+      }
+    });
+    return;
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>

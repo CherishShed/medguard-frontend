@@ -2,16 +2,13 @@ import { useEffect, useState } from "react";
 import {
   PrescriptionModalStore,
   ToastStore,
-  UserStore,
   patientType,
 } from "../../Context/States";
 import {
   URLSearchParamsInit,
   createSearchParams,
-  useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { checkAuth } from "../../Utils/helpers";
 import axios from "axios";
 import MedicationDataTable, {
   medicationType,
@@ -34,7 +31,6 @@ import PrescriptionDetailsModal from "@/Components/PrescriptionDetailsModal";
 
 function Medication() {
   const openToast = ToastStore((store) => store.openToast);
-  const setUser = UserStore((store) => store.setUser);
   const [activeMedData, setActiveMedData] = useState<medicationType[] | null>(
     null
   );
@@ -42,7 +38,6 @@ function Medication() {
     null
   );
   const [patient, setPatient] = useState<patientType | null>(null);
-  const navigate = useNavigate();
   const [value, setValue] = useState("1");
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(getQueryParameters());
@@ -111,19 +106,6 @@ function Medication() {
     } as URLSearchParamsInit);
     setSearchParams(params);
   }, [searchValue]);
-
-  useEffect(() => {
-    checkAuth().then((response) => {
-      if (!response.auth) {
-        setUser(null, false);
-        openToast("Please Log in", "error");
-        return navigate("/signin");
-      } else {
-        setUser(response.user, true);
-      }
-    });
-    return;
-  }, []);
 
   const getMedDetails = () => {
     setLoading(true);
