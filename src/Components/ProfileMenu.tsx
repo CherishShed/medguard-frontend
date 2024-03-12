@@ -9,8 +9,8 @@ import { toTitleCase } from "../Utils/helpers";
 
 const style = {
   position: "relative",
-  top: "50%",
-  left: "70%",
+  top: "48%",
+  left: "75%",
   transform: "translate(-50%, -50%)",
   width: "60%",
   maxWidth: 600,
