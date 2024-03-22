@@ -203,9 +203,10 @@ function Vitals() {
                     textColor="primary"
                     aria-label="lab API tabs example"
                   >
-                    <Tab label="Blood Pressure" value="1" />
+                    <Tab label="Temperature" value="1" />
                     <Tab label="Heart Beat" value="2" />
                     <Tab label="Blood Oxygen" value="3" />
+                    <Tab label="Blood Pressure" value="4" />
                     <LoadingButton
                       className="right-0"
                       variant="contained"
@@ -229,7 +230,6 @@ function Vitals() {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis
                         dataKey={(e) => formatDate(e.createdAt)}
-                        name="mmm"
                         fontSize={8}
                       />
                       <YAxis />
@@ -237,17 +237,10 @@ function Vitals() {
                       <Legend />
                       <Line
                         type="monotone"
-                        dataKey={(e) => e.blood_pressure.split("/")[0]}
+                        dataKey={(e) => e.temperature}
                         stroke="Green"
-                        unit={"mmHg"}
-                        name="Systolic Pressure"
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey={(e) => e.blood_pressure.split("/")[1]}
-                        stroke="Blue"
-                        name="Diastolic Pressure"
-                        unit={"mmHg"}
+                        unit={"°C"}
+                        name="Temperature"
                       />
                     </LineChart>
                   ) : (
@@ -319,6 +312,43 @@ function Vitals() {
                       <Legend />
                       <Bar dataKey="blood_oxygen" fill="orange" unit={"%"} />
                     </BarChart>
+                  ) : (
+                    <Skeleton height={300} width={1000} className="mx-auto" />
+                  )}
+                </TabPanel>
+                <TabPanel value="4" className="!w-full">
+                  {patient ? (
+                    <LineChart
+                      width={1000}
+                      height={250}
+                      className="!min-w-fit !h-[300px] mx-auto"
+                      data={patient.vitals}
+                      margin={{ top: 5, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey={(e) => formatDate(e.createdAt)}
+                        name="mmm"
+                        fontSize={8}
+                      />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey={(e) => e.blood_pressure.split("/")[0]}
+                        stroke="Green"
+                        unit={"mmHg"}
+                        name="Systolic Pressure"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey={(e) => e.blood_pressure.split("/")[1]}
+                        stroke="Blue"
+                        name="Diastolic Pressure"
+                        unit={"mmHg"}
+                      />
+                    </LineChart>
                   ) : (
                     <Skeleton height={300} width={1000} className="mx-auto" />
                   )}
