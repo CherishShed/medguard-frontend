@@ -21,6 +21,7 @@ export type patientType = {
     blood_pressure: string;
     heart_beat: number;
     blood_oxygen: number;
+    temperature: number;
     createdAt: string;
   }[];
   hospitalNumber: string;

@@ -78,12 +78,13 @@ function DataTable() {
           blood_pressure: string;
           heart_beat: number;
           blood_oxygen: number;
+          temperature: number;
           updatedAt: string;
         }) => {
           return (
             <p className="font-medium">
               {" "}
-              {value.blood_pressure}mmHg - {value.heart_beat}bpm
+              {value.temperature}°C - {value.heart_beat}bpm
               <span className="block text-xs">
                 {formatDate(value.updatedAt)}
               </span>
