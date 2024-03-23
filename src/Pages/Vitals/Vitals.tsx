@@ -218,7 +218,7 @@ function Vitals() {
                     </LoadingButton>
                   </TabList>
                 </Box>
-                <TabPanel value="1" className="!w-full">
+                <TabPanel value="1" className="overflow-x-scroll !w-full">
                   {patient ? (
                     <LineChart
                       width={1000}
