@@ -28,7 +28,6 @@ function formatTime(dateString: string | number | undefined) {
 function MedicationDetails({
   index,
   changeDrug,
-  medData,
 }: {
   index: number;
   changeDrug: (
@@ -124,7 +123,6 @@ function MedicationDetails({
         onChange={(e) => {
           changeDrug(index, "instructions", e.target.value);
         }}
-        value={medData[index].instructions}
       />
       <section>
         <hr className="bg-lime-500 h-[3px] mb-2" />

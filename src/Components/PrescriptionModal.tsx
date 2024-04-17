@@ -226,7 +226,6 @@ export default function PrescriptionModal({
                 }));
               }}
               label="Date Prescribed"
-              readOnly
             />
           </LocalizationProvider>
           <h2 className="font-bold text-xl">Drugs</h2>
