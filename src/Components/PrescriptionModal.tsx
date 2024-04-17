@@ -172,6 +172,7 @@ export default function PrescriptionModal({
   };
 
   function submitMedication() {
+    console.log(prescriptionData);
     axios
       .post(
         `https://medguard.vercel.app/api/healthworker/patient/prescription`,
@@ -185,6 +186,7 @@ export default function PrescriptionModal({
         getMedDetails();
       })
       .catch((error) => {
+        console.log(error);
         openToast(error.response.data.message, "error");
       });
   }

@@ -88,7 +88,7 @@ function Home() {
               <ShowChart color="warning" className="!text-5xl" />
             </div>
             <p className="text-xl font-bold block text-yellow-700 text-center">
-              Abormal Readings
+              Abnormal Readings
             </p>
           </div>
           <div className="flex flex-col justify-between rounded-xl border-2 border-red-500 h-[150px] w-[200px] px-3 py-3 bg-red-200">
